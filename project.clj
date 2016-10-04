@@ -1,8 +1,8 @@
-(defproject dfmm "0.1.0-SNAPSHOT"
+(defproject dmm "0.1.0-SNAPSHOT"
   :description "Data Flow Matrix Machines"
-  :url "https://github.com/anhinga/fluid"
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
+  :url "https://github.com/jsa-aerial/DMM"
+  :license {:name "The MIT License (MIT)"
+            :url "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.9.0-alpha10"]
                  [net.mikera/vectorz-clj "0.45.0"]
                  [org.clojure/tools.nrepl  "0.2.12"] ; Explicit nREPL
