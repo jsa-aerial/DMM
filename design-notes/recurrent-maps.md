@@ -27,6 +27,26 @@ this diversity. Let's allow only one argument and one
 return result for any built-in stream transformation,
 and let's stipulate that those must be recurrent maps, 
 and let's agree that ihe first level of hash-map keys
-would name (and map to) the respective input and output
-streams.
+would name the respective input and output
+streams and map to their latest values.
+
+## Non-flat structure of DMM indexes.
+
+It seems convenient to keep the natural multilevel structure
+while coding the network, and not to try to flatten the indexes
+into one level.
+
+Therefore the root keys should be types of neurons.
+
+The only thing that distinguishes the neuron types at this
+point are the names of the functions implementing the built-in
+stream transformations. Symbols serving as names of these functions
+might be a good choice for the top-level keys in the network,
+given that, for example, the following works nicely
+
+<code>(map (fn [x] (eval (list (x 0) (x 1)))) m)</code>
+
+when <code>m</code> is the dictionary mapping the function
+names to the arguments the functions are to be applied to.
+
 
