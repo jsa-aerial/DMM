@@ -44,7 +44,7 @@ stream transformations. Symbols serving as names of these functions
 might be a good choice for the top-level keys in the network,
 given that, for example, the following works nicely
 
-<code>(map (fn [x] (eval (list (x 0) (x 1)))) m)</code>
+<code>(map (fn \[x\] (eval (list (x 0) (x 1)))) m)</code>
 
 when <code>m</code> is the dictionary mapping the function
 names to the arguments the functions are to be applied to.
