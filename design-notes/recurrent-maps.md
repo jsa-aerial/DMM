@@ -49,4 +49,19 @@ given that, for example, the following works nicely
 when `m` is the dictionary mapping the function
 names to the arguments the functions are to be applied to.
 
+### The natural structure of the row of the network matrix.
+
+A map from names of the built-in transformers to
+(the map from names of the individual neurons to
+(the map from names of their output streams to the
+respective non-zero matrix coefficients)).
+
+Approximately similar structure should be of the matrix
+itself (with the caveat that we might blend the matrix into
+the overall network).
+
+But without this caveat: a map from names of the built-in transformers to
+(the map from names of the individual neurons to
+(the map from names of their output streams to the
+respective matrix rows)).
 
