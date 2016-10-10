@@ -63,5 +63,13 @@ the overall network).
 But without this caveat: a map from names of the built-in transformers to
 (the map from names of the individual neurons to
 (the map from names of their output streams to the
-respective matrix rows)).
+respective non-zero matrix rows)).
+
+Caveat 1: If a neuron is mentioned with a row, we want it to be present
+in the top-level map, even if there are no non-empty rows associated with
+it (in this case, an empty map `{}` is associated with this neuron).
+
+Caveat 2: we have not yet decided whether to find a place for the
+current values of the input and output streams within the matrix,
+or on the side (something to ponder).
 
