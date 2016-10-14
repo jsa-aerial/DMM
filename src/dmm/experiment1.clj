@@ -1,5 +1,7 @@
 (ns dmm.experiment1
   [:require
+   [clojure.core.async :as async
+    :refer (<! <!! >! >!! put! chan go go-loop alt! timeout alt! alts!!)]
    [clojure.core.matrix :as m]
    [clojure.core.matrix.operators :as mo]
    [clojure.core.matrix.dataset :as ds]])
