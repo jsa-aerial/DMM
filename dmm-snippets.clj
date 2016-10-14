@@ -6,7 +6,7 @@
 (defn numelt [x] {:number x})
 
 (defn maps? [x & xs]
-  (reduce (fn[tv b] (and tv b)) (map map? (conj x xs))))
+  (reduce (fn[tv b] (and tv b)) (map map? (conj xs x))))
 
 (defn rec-map-mult [n M]
   (reduce (fn [M [k v]]
