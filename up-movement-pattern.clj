@@ -39,3 +39,13 @@
   (reduce (fn [new-map [f v]]
             (assoc new-map (funcname f) v))
           {} funcmap))
+
+; a non-string-based alternative to render-funcmap
+
+(defn render-funcmap-2 [funcmap]
+  (reduce (fn [new-map [f v]]
+            (assoc new-map (type f) v))
+          {} funcmap))
+
+
+
