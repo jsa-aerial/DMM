@@ -33,7 +33,7 @@
 
 (require '[clojure.string :as str])
 
-(defn funcname [f] ((str/split (str f) #"\$|\@") 1))
+(defn funcname [f] ((str/split ((str/split (str f) #"\$" 2) 1) #"\@") 0))
 
 (defn render-funcmap [funcmap]
   (reduce (fn [new-map [f v]]
