@@ -79,7 +79,7 @@
    (map first
         (iterate (fn[[m fs]]
                    [((first fs) m) (rotate fs)])
-                 [m fs]))))
+                 [m (cons f1 (cons f2 fs))]))))
 
 
 (take 3 (iter-apply-fns testmap g h))
