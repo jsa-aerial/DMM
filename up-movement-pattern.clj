@@ -28,3 +28,14 @@
             (assoc new-fnamed-imap f (apply-to-map-of-named-instances f names-to-args-map)))
           {} function-named-instance-map))  
 
+
+; auxiliary functions to render funcnames better
+
+(require '[clojure.string :as str])
+
+(defn funcname [f] ((str/split (str f) #"\$|\@") 1))
+
+(defn render-funcmap [funcmap]
+  (reduce (fn [new-map [f v]]
+            (assoc new-map (funcname f) v))
+          {} funcmap))
