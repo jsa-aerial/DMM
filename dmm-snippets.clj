@@ -86,4 +86,25 @@
 (first (drop 9 (iter-apply-fns testmap g h)))
 (first (drop 9 (iter-apply-fns testmap g h f)))
 
+; generalized multiplicative masks and linear combinations
+
+; a recurrent map Mask (mult-mask) and a recurrent map Structured Vector (M)
+; traverse the Mask; for each numerical leaf in the Mask, 
+; if the path corresponding to the leaf exists in the Structured Vector,
+; take the result of multiplication of that leaf by the
+; rec-map or number corresponding to that path in the Structured Vector.
+; Otherwise just drop the path from the result.
+
+(defn rec-map-mult-mask [mult-mask M]
+
+) 
+
+; generalized linear combination - same as above, but
+; compute the sum of the resulting vectors corresponding
+; to the leaves in the Mask.
+
+(defn rec-map-lin-comb [mult-mask M]
+
+)
+
 
