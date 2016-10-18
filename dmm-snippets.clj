@@ -95,9 +95,34 @@
 ; rec-map or number corresponding to that path in the Structured Vector.
 ; Otherwise just drop the path from the result.
 
-(defn rec-map-mult-mask [mult-mask M]
+; note that in the current version if (:number x) is present
+; in the mult-mask instead of x, it would not work correctly.
 
-) 
+; further note: whether equality of a multiplier to 1 requires a special consideration
+
+(defn rec-map-mult-mask [mult-mask M]
+  (reduce (fn [new-M [k mask]]
+            (let [m (get M k)
+                  actual-M (if (not (mORn? m)) 0 m)
+                  actual-mask (if (not (mORn? mask)) 0 mask)
+                  new-v
+                    (cond
+                      (maps? actual-mask actual-M) (rec-map-mult-mask actual-mask actual-M)
+                      (mANDn? actual-M actual-mask) (rec-map-mult actual-mask actual-M) ; leaf works!
+                      (mANDn? actual-mask actual-M) 0
+                      :else (* actual-M actual-mask))]
+              (if (nullelt? new-v) new-M (assoc new-M k new-v)))) 
+          {} mult-mask))
+
+; this test just takes squares of all leaves
+
+(rec-map-mult-mask testmap testmap)
+
+; this works too, it multiplies the :c subtree of testmap by 7
+
+(def testmask {:c 7})
+
+(rec-map-mult-mask testmask testmap)
 
 ; generalized linear combination - same as above, but
 ; compute the sum of the resulting vectors corresponding
