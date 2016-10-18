@@ -9,6 +9,7 @@
 (defn mORn? [x] (or (map? x) (number? x)))
 (defn mANDn? [x y] (and (map? x) (number? y)))
 (defn =num0? [x] (and (number? x) (zero? x)))
+(defn num-nonzero? [x] (and (number? x) (not (zero? x))))
 (defn nullelt? [x] (or (= x {}) (=num0? x)))
 (defn numelt [x] {:number x})
 
@@ -98,7 +99,8 @@
 ; note that in the current version if (:number x) is present
 ; in the mult-mask instead of x, it would not work correctly.
 
-; further note: whether equality of a multiplier to 1 requires a special consideration
+; further note: meditate whether equality of a multiplier to 1 
+; requires a special consideration
 
 (defn rec-map-mult-mask [mult-mask M]
   (reduce (fn [new-M [k mask]]
@@ -128,8 +130,48 @@
 ; compute the sum of the resulting vectors corresponding
 ; to the leaves in the Mask.
 
+
+; right now the way it uses rec-map-sum completely ignores large-M vs small-M distinction
+; it should not matter correctness-wise, but should eventually prompt a meditation
+; efficiency-wise
+
+; this function is very similar to rec-map-mult-mask, the only difference
+; except for its name (and hence recursive call) should have been
+; that rec-map-sum is used instead of assoc
+
+; but rec-map-sum is current only works for maps, which is why
+; part of its functionality is duplicated here - something to meditate upon
+; during a code review
+
 (defn rec-map-lin-comb [mult-mask M]
+  (reduce (fn [new-M [k mask]]
+            (let [m (get M k)
+                  actual-M (if (not (mORn? m)) 0 m)
+                  actual-mask (if (not (mORn? mask)) 0 mask)
+                  v-to-add
+                    (cond
+                      (maps? actual-mask actual-M) (rec-map-lin-comb actual-mask actual-M)
+                      (mANDn? actual-M actual-mask) (rec-map-mult actual-mask actual-M) ; leaf works!
+                      (mANDn? actual-mask actual-M) 0
+                      :else (* actual-M actual-mask))
+                  new-sum
+                    (cond
+                       (map? v-to-add) (rec-map-sum new-M v-to-add)
+                       (num-nonzero? v-to-add) (rec-map-sum new-M (numelt v-to-add)) 
+                       :else new-M)]
+              new-sum))
+          {} mult-mask))
 
-)
+; the following tests work
 
+(rec-map-lin-comb testmask testmask)
+; answer {:number 49}
 
+(rec-map-lin-comb testmask testmap)
+; answer {:a 7, :c {:x 7, :y 21}, :b 14}
+
+(rec-map-lin-comb testmap testmap)
+; answer {:number 20}
+
+(rec-map-lin-comb testmap testmask)
+; answer {}
