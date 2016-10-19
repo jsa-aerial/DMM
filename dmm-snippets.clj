@@ -228,6 +228,15 @@
 (defn accum [input]
   (rec-map-sum (input :accum) (input :delta)))
 
+; a bit of tests
+
+(rec-map-sum (rec-map-lin-comb testmask testmap) (rec-map-lin-comb {:c 1} testmap))
+; answer {:b 16, :c {:x 8, :y 24}, :a 8}
+
+(def try-input {:accum (rec-map-lin-comb testmask testmap) :delta (rec-map-lin-comb {:c 1} testmap)})
+
+(accum try-input)
+; answer {:b 16, :c {:x 8, :y 24}, :a 8}
 
 ; provisional version of down-movement (UNTESTED, need to define "accum" before it might work)
 
