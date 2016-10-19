@@ -142,9 +142,10 @@
 ; to the leaves in the Mask.
 
 
-; right now the way it uses rec-map-sum completely ignores large-M vs small-M distinction
+; right now the way it uses rec-map-sum somewhat ignores large-M vs small-M distinction
 ; it should not matter correctness-wise, but should eventually prompt a meditation
-; efficiency-wise
+; efficiency-wise; we did just ended the practice of adding a non-trivial map
+; to {} interpreted as a large map, so some progress here.
 
 ; this function is very similar to rec-map-mult-mask, the only difference
 ; except for its name (and hence recursive call) should have been
@@ -167,7 +168,8 @@
                       :else (* actual-M actual-mask))
                   new-sum
                     (cond
-                       (map? v-to-add) (rec-map-sum new-M v-to-add)
+                       (map? v-to-add) 
+                          (if (= new-M {}) v-to-add (rec-map-sum new-M v-to-add))
                        (num-nonzero? v-to-add) (rec-map-sum new-M (numelt v-to-add)) 
                        :else new-M)]
               new-sum))
