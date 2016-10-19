@@ -200,3 +200,11 @@
 (apply-matrix arg-m arg-v 1)
 ; answer {:x {:number 24.0}, :y {:number 50}, :z {:number 26.0}}
 
+; the extra ":number" above are a bit annoying; we'll see if that's a problem,
+; since for deeper vectors we have
+
+(def arg-v1 {:a {:v 3}, :b {:v 5, :w {:v 8}}})
+
+(apply-matrix arg-m arg-v1 1)
+; answer {:x {:v 24}, :y {:v 50, :w {:v 80}}, :z {:w {:v 32}, :v 26}}
+
