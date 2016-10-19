@@ -69,6 +69,12 @@ Caveat 1: If a neuron is mentioned with a row, we want it to be present
 in the top-level map, even if there are no non-empty rows associated with
 it (in this case, an empty map `{}` is associated with this neuron).
 
+Caveat 1 continued: however, for the time being we require
+a non-trivial input to a neuron, which it is free to ignore.
+E.g. one can input some fake thing, or even the network matrix itself,
+or even the output of the neuron itself with coefficient one,
+and that should activate it today.
+
 Caveat 2: we have not yet decided whether to find a place for the
 current values of the input and output streams within the matrix,
 or on the side (something to ponder).
