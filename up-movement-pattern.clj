@@ -33,6 +33,9 @@
 
 (require '[clojure.string :as str])
 
+(require '[clojure.test :as test])
+
+
 (defn funcname [f] ((str/split ((str/split (str f) #"\$" 2) 1) #"\@") 0))
 
 (defn render-funcmap [funcmap]
@@ -47,5 +50,13 @@
             (assoc new-map (type f) v))
           {} funcmap))
 
+; let's render functions in an arbitrary map in a smart was
+
+(defn render-smart [map-with-funcs]
+  (reduce (fn [new-map [k v]]
+            (let [new-k (if (test/function? k) (funcname k) k)
+                  new-v (if (map? v) (render-smart v) v)]
+              (assoc new-map new-k new-v)))
+          {} map-with-funcs))
 
 
