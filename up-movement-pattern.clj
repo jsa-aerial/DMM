@@ -50,7 +50,7 @@
             (assoc new-map (type f) v))
           {} funcmap))
 
-; let's render functions in an arbitrary map in a smart was
+; let's render functions in an arbitrary map in a smart way
 
 (defn render-smart [map-with-funcs]
   (reduce (fn [new-map [k v]]
