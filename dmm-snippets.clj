@@ -221,9 +221,12 @@
 (apply-matrix arg-m arg-v1 1)
 ; answer {:x {:v 24}, :y {:v 50, :w {:v 80}}, :z {:w {:v 32}, :v 26}}
 
-; accumulator (NEED to define)
+; accumulator (in the first version it is just the sum, the user is expected
+; to keep the matrix row corresponding to :accum field at 1 at the appropriate place
+; and zero at all others)
 
-(defn accum [])
+(defn accum [input]
+  (rec-map-sum (input :accum) (input :delta)))
 
 
 ; provisional version of down-movement (UNTESTED, need to define "accum" before it might work)
