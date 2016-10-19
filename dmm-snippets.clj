@@ -226,7 +226,7 @@
 ; and zero at all others)
 
 (defn accum [input]
-  (rec-map-sum (input :accum) (input :delta)))
+  {:single (rec-map-sum (input :accum) (input :delta))})
 
 ; a bit of tests
 
@@ -236,10 +236,12 @@
 (def try-input {:accum (rec-map-lin-comb testmask testmap) :delta (rec-map-lin-comb {:c 1} testmap)})
 
 (accum try-input)
-; answer {:b 16, :c {:x 8, :y 24}, :a 8}
+; answer {:single {:b 16, :c {:x 8, :y 24}, :a 8}}
 
 ; Remark on identity: note that "identity" function (fn [x] x) is already defined
-; and can also be used as a simple accumulator
+; and can also be used as a simple accumulator, as long as we are content with
+; input and output being named the same (e.g. :single); otherwise one would need
+; a definition like (defn id [x] {:output (x :input)})
 
 ; provisional version of down-movement (UNTESTED, need to define "accum" before it might work)
 
