@@ -238,6 +238,9 @@
 (accum try-input)
 ; answer {:b 16, :c {:x 8, :y 24}, :a 8}
 
+; Remark on identity: note that "identity" function (fn [x] x) is already defined
+; and can also be used as a simple accumulator
+
 ; provisional version of down-movement (UNTESTED, need to define "accum" before it might work)
 
 (defn down-movement [function-named-instance-map-of-outputs]
