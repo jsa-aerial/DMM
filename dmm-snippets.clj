@@ -43,7 +43,14 @@
 (defn rec-map-sub [n M]
   (rec-map-op - n M))
 
+; the idea of rec-map-mult-share is to avoid copying;
+; we might do that for other operations if necessary
 
+(defn rec-map-mult-share [n M]
+  (cond
+    (one? n) M
+    (zero? n) {}
+    :else (rec-map-mult n M)))
 
 (defn rec-map-sum [large-M small-M] ; "large" and "small" express intent
   (reduce (fn [M [k small-v]]
@@ -111,7 +118,7 @@
                   new-v
                     (cond
                       (maps? actual-mask actual-M) (rec-map-mult-mask actual-mask actual-M)
-                      (mANDn? actual-M actual-mask) (rec-map-mult actual-mask actual-M) ; leaf works!
+                      (mANDn? actual-M actual-mask) (rec-map-mult-share actual-mask actual-M) ; leaf works!
                       (mANDn? actual-mask actual-M) 0
                       :else (* actual-M actual-mask))]
               (if (nullelt? new-v) new-M (assoc new-M k new-v)))) 
@@ -120,12 +127,14 @@
 ; this test just takes squares of all leaves
 
 (rec-map-mult-mask testmap testmap)
+; andswer {:b 4, :c {:b 4, :c {:x 1, :y 9}, :a 1}, :a 1}
 
 ; this works too, it multiplies the :c subtree of testmap by 7
 
 (def testmask {:c 7})
 
 (rec-map-mult-mask testmask testmap)
+; answer {:c {:b 14, :c {:x 7, :y 21}, :a 7}}
 
 ; generalized linear combination - same as above, but
 ; compute the sum of the resulting vectors corresponding
@@ -152,7 +161,7 @@
                   v-to-add
                     (cond
                       (maps? actual-mask actual-M) (rec-map-lin-comb actual-mask actual-M)
-                      (mANDn? actual-M actual-mask) (rec-map-mult actual-mask actual-M) ; leaf works!
+                      (mANDn? actual-M actual-mask) (rec-map-mult-share actual-mask actual-M) ; leaf works!
                       (mANDn? actual-mask actual-M) 0
                       :else (* actual-M actual-mask))
                   new-sum
