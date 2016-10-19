@@ -208,3 +208,16 @@
 (apply-matrix arg-m arg-v1 1)
 ; answer {:x {:v 24}, :y {:v 50, :w {:v 80}}, :z {:w {:v 32}, :v 26}}
 
+; accumulator (NEED to define)
+
+(defn accum [])
+
+
+; provisional version of down-movement (UNTESTED, need to define "accum" before it might work)
+
+(defn down-movement [function-named-instance-map-of-outputs]
+  (apply-matrix
+    ((function-named-instance-map-of-outputs accum) :self) ; current matrix
+    function-named-instance-map-of-outputs ; arg-vector
+    3))
+
