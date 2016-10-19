@@ -175,3 +175,28 @@
 
 (rec-map-lin-comb testmap testmask)
 ; answer {}
+
+; the addendum to caveat 1 we've just committed ("caveat 1 continued")
+; means that the "down movement" is just plain matrix multiplication
+; without any extra frills. The application of the matrix row to
+; the vector of neuron outputs is simply "rec-map-lin-comb".
+
+; let's say, applying a row to the vector of outputs is level 0,
+; and applying a map of rows obtaining the map of answer is level 1, etc.
+; Our current design spec says that the "down movement" is applying this
+; funcion at level 3.
+
+(defn apply-matrix [arg-matrix arg-vector level]
+  (if (= level 0) 
+    (rec-map-lin-comb arg-matrix arg-vector)
+    (reduce (fn [new-map [k v]]
+              (assoc new-map k (apply-matrix v arg-vector (- level 1))))
+      {} arg-matrix)))
+
+(def arg-v {:a 3. :b 5}) ; these don't have to be numbers, can be any vectors
+
+(def arg-m {:x {:a 8} :y {:b 10} :z {:a 2, :b 4}})
+
+(apply-matrix arg-m arg-v 1)
+; answer {:x {:number 24.0}, :y {:number 50}, :z {:number 26.0}}
+
