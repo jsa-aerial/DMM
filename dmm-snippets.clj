@@ -247,7 +247,7 @@
 
 (defn down-movement [function-named-instance-map-of-outputs]
   (apply-matrix
-    ((function-named-instance-map-of-outputs accum) :self) ; current matrix
+    (((function-named-instance-map-of-outputs accum) :self) :single) ; current matrix
     function-named-instance-map-of-outputs ; arg-vector
     3))
 
