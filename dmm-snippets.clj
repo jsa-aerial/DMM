@@ -9,6 +9,7 @@
 (defn mORn? [x] (or (map? x) (number? x)))
 (defn mANDn? [x y] (and (map? x) (number? y)))
 (defn =num0? [x] (and (number? x) (zero? x)))
+(defn one? [x] (or (= x 1) (= x 1.0)))
 (defn num-nonzero? [x] (and (number? x) (not (zero? x))))
 (defn nullelt? [x] (or (= x {}) (=num0? x)))
 (defn numelt [x] {:number x})
