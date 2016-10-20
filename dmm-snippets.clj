@@ -67,6 +67,10 @@
               (if (nullelt? new-v) M (assoc M k new-v))))
           large-M small-M))
 
+(defn rec-map-sum-variadic [x & xs]
+  (reduce (fn [new-sum y]
+            (rec-map-sum new-sum y))
+          x xs))
 
 (defn g [m]
   (rec-map-mult 2 m))
