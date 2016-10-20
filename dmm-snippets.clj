@@ -64,7 +64,7 @@
                     (mANDn? l-v s-v) (rec-map-sum l-v (numelt s-v))
                     (mANDn? s-v l-v) (rec-map-sum s-v (numelt l-v))
                     :else (+ l-v s-v))]
-              (if (nullelt? new-v) M (assoc M k new-v))))
+              (if (nullelt? new-v) (dissoc M k) (assoc M k new-v))))
           large-M small-M))
 
 (defn rec-map-sum-variadic [x & xs]
