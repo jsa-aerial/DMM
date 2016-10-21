@@ -6,6 +6,12 @@
   ([n coll]
    (concat (drop n coll) (take n coll))))
 
+(defn map-every-nth [n f coll]
+  (map-indexed #(if (zero? (mod (inc %1) n)) (f %2) nil) coll))
+
+(defn map-every-other [f coll]
+  ((partial map-every-nth 2) f coll))
+
 (defn mORn? [x] (or (map? x) (number? x)))
 (defn mANDn? [x y] (and (map? x) (number? y)))
 (defn =num0? [x] (and (number? x) (zero? x)))
@@ -22,36 +28,34 @@
 (def testmap
   {:a 1 :b 2 :c {:a 1 :b 2 :c {:x 1 :y 3}}})
 
-(defn rec-map-op [op n M]
-  (reduce (fn [M [k v]]
-            (let [new-v
-                  (cond
-                    (map? v) (rec-map-op op n v)
-                    (number? v) (op v n)
-                    :else 0)]
-              (if (nullelt? new-v) M (assoc M k new-v))))
-          {} M))
+(defn rec-map-op [op unit? n M]
+  (if (unit? n)
+    M
+    (reduce (fn [M [k v]]
+              (let [new-v
+                    (cond
+                      (map? v) (rec-map-op op unit? n v)
+                      (number? v) (op v n)
+                      :else 0)]
+                (if (nullelt? new-v) M (assoc M k new-v))))
+            {} M)))
+
 
 (defn rec-map-mult [n M]
-  (rec-map-op * n M))
+  (if (zero? n)
+    {}
+    (rec-map-op * one? n M)))
 
 (defn rec-map-div [n M]
-  (rec-map-op / n M))
+  (rec-map-op / one? n M))
 
 (defn rec-map-add [n M]
-  (rec-map-op + n M))
+  (rec-map-op + zero? n M))
 
 (defn rec-map-sub [n M]
-  (rec-map-op - n M))
+  (rec-map-op - zero? n M))
 
-; the idea of rec-map-mult-share is to avoid copying;
-; we might do that for other operations if necessary
 
-(defn rec-map-mult-share [n M]
-  (cond
-    (one? n) M
-    (zero? n) {}
-    :else (rec-map-mult n M)))
 
 (defn rec-map-sum [large-M small-M] ; "large" and "small" express intent
   (reduce (fn [M [k small-v]]
@@ -103,7 +107,7 @@
 ; generalized multiplicative masks and linear combinations
 
 ; a recurrent map Mask (mult-mask) and a recurrent map Structured Vector (M)
-; traverse the Mask; for each numerical leaf in the Mask, 
+; traverse the Mask; for each numerical leaf in the Mask,
 ; if the path corresponding to the leaf exists in the Structured Vector,
 ; take the result of multiplication of that leaf by the
 ; rec-map or number corresponding to that path in the Structured Vector.
@@ -112,7 +116,7 @@
 ; note that in the current version if (:number x) is present
 ; in the mult-mask instead of x, it would not work correctly.
 
-; further note: meditate whether equality of a multiplier to 1 
+; further note: meditate whether equality of a multiplier to 1
 ; requires a special consideration
 
 (defn rec-map-mult-mask [mult-mask M]
@@ -123,10 +127,10 @@
                   new-v
                     (cond
                       (maps? actual-mask actual-M) (rec-map-mult-mask actual-mask actual-M)
-                      (mANDn? actual-M actual-mask) (rec-map-mult-share actual-mask actual-M) ; leaf works!
+                      (mANDn? actual-M actual-mask) (rec-map-mult actual-mask actual-M) ; leaf works!
                       (mANDn? actual-mask actual-M) 0
                       :else (* actual-M actual-mask))]
-              (if (nullelt? new-v) new-M (assoc new-M k new-v)))) 
+              (if (nullelt? new-v) new-M (assoc new-M k new-v))))
           {} mult-mask))
 
 ; this test just takes squares of all leaves
@@ -167,14 +171,14 @@
                   v-to-add
                     (cond
                       (maps? actual-mask actual-M) (rec-map-lin-comb actual-mask actual-M)
-                      (mANDn? actual-M actual-mask) (rec-map-mult-share actual-mask actual-M) ; leaf works!
+                      (mANDn? actual-M actual-mask) (rec-map-mult actual-mask actual-M) ; leaf works!
                       (mANDn? actual-mask actual-M) 0
                       :else (* actual-M actual-mask))
                   new-sum
                     (cond
-                       (map? v-to-add) 
+                       (map? v-to-add)
                           (if (= new-M {}) v-to-add (rec-map-sum new-M v-to-add))
-                       (num-nonzero? v-to-add) (rec-map-sum new-M (numelt v-to-add)) 
+                       (num-nonzero? v-to-add) (rec-map-sum new-M (numelt v-to-add))
                        :else new-M)]
               new-sum))
           {} mult-mask))
@@ -204,7 +208,7 @@
 ; funcion at level 3.
 
 (defn apply-matrix [arg-matrix arg-vector level]
-  (if (= level 0) 
+  (if (= level 0)
     (rec-map-lin-comb arg-matrix arg-vector)
     (reduce (fn [new-map [k v]]
               (assoc new-map k (apply-matrix v arg-vector (- level 1))))

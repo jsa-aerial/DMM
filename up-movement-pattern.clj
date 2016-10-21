@@ -29,37 +29,3 @@
           {} function-named-instance-map))  
 
 
-; auxiliary functions to render funcnames better
-
-; this is likely to become obsolete, as we are replacing f with (var f)
-; in order to fight changes in function references on recompilation
-
-(require '[clojure.string :as str])
-
-(require '[clojure.test :as test])
-
-
-(defn funcname [f] ((str/split ((str/split (str f) #"\$" 2) 1) #"\@") 0))
-
-(defn render-funcmap [funcmap]
-  (reduce (fn [new-map [f v]]
-            (assoc new-map (funcname f) v))
-          {} funcmap))
-
-; a non-string-based alternative to render-funcmap
-
-(defn render-funcmap-2 [funcmap]
-  (reduce (fn [new-map [f v]]
-            (assoc new-map (type f) v))
-          {} funcmap))
-
-; let's render functions in an arbitrary map in a smart way
-
-(defn render-smart [map-with-funcs]
-  (reduce (fn [new-map [k v]]
-            (let [new-k (if (test/function? k) (funcname k) k)
-                  new-v (if (map? v) (render-smart v) v)]
-              (assoc new-map new-k new-v)))
-          {} map-with-funcs))
-
-

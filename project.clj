@@ -3,17 +3,20 @@
   :url "https://github.com/jsa-aerial/DMM"
   :license {:name "The MIT License (MIT)"
             :url "http://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.9.0-alpha10"]
+  :dependencies [;;[org.clojure/clojure "1.9.0-alpha10"]
+                 [org.clojure/clojure "1.8.0"]
                  [net.mikera/vectorz-clj "0.45.0"]
                  [org.clojure/tools.nrepl  "0.2.12"] ; Explicit nREPL
 
-                 [org.clojure/core.async    "0.1.346.0-17112a-alpha"]
+                 [org.clojure/core.async    "0.2.391"]
+                 ;;[org.clojure/core.async    "0.1.346.0-17112a-alpha"]
                  [org.clojure/data.json     "0.2.6"]
 
                  [aerial.fs                 "1.1.5"]
                  [aerial.utils              "1.0.6"]
                  [aerial.bio.utils          "1.0.0"]
 
+                 [expectations "2.1.8"]
                  [net.apribase/clj-dns      "0.1.0"] ; reverse-dns-lookup
                  ]
 

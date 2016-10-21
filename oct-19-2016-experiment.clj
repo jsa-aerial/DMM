@@ -45,44 +45,6 @@
 (defn extract-delta [current-output]
   ((((extract-matrix current-output) v-accum) :self) :delta))
 
-; recording the experiment in the comments here on Oct 19
-
-; user=> (load-file "dmm-snippets.clj")
-; #'user/down-movement
-; user=> (load-file "up-movement-pattern.clj")
-; #'user/render-smart
-; user=> (load-file "oct-19-2016-experiment.clj")
-; #'user/extract-delta
-; user=> (extract-delta init-output)
-; {#<core$identity clojure.core$identity@56a75737> {:update-1 {:single 1}}}
-; user=> (render-smart (extract-delta init-output))
-; {"identity" {:update-1 {:single 1}}}
-; user=> (def init-input (down-movement init-output))
-; #'user/init-input
-; user=> (def second-output (up-movement init-input))
-; #'user/second-output
-; user=> (render-smart (extract-delta second-output))
-; {"identity" {:update-2 {:single 1}}}
-; user=> (def another-output (up-movement (down-movement second-output)))
-; #'user/another-output
-; user=> (render-smart (extract-delta another-output))
-; {"identity" {:update-3 {:single 1}}}
-; user=> (def another-output (up-movement (down-movement another-output)))
-; #'user/another-output
-; user=> (render-smart (extract-delta another-output))
-; {"identity" {:update-1 {:single 1}}}
-; user=> (def another-output (up-movement (down-movement another-output)))
-; #'user/another-output
-; user=> (render-smart (extract-delta another-output))
-; {"identity" {:update-2 {:single 1}}}
-; user=> (def another-output (up-movement (down-movement another-output)))
-; #'user/another-output
-; user=> (render-smart (extract-delta another-output))
-; {"identity" {:update-3 {:single 1}}}
-; user=> (def another-output (up-movement (down-movement another-output)))
-; #'user/another-output
-; user=> (render-smart (extract-delta another-output))
-; {"identity" {:update-1 {:single 1}}}
 
 ; recording the experiment here on Oct 20 after the switch from accum to (var accum),
 ; and from identity to (var identity)
