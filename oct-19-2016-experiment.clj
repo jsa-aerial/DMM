@@ -87,6 +87,10 @@
 ; recording the experiment here on Oct 20 after the switch from accum to (var accum),
 ; and from identity to (var identity)
 
+; also the difference here is that we are using iter-apply-fns to run network steps
+; and that we actually re-run the network from the start each time
+; (just because it's less typing and because we can)
+
 ; user=> (extract-delta init-output)
 ; {#'clojure.core/identity {:update-1 {:single 1}}}
 ; user=> (extract-delta (first (drop 2 (iter-apply-fns init-output down-movement up-movement))))
