@@ -1,32 +1,35 @@
 ; trying to build a very small network to reproduce the essence of
 ; Project Fluid Aug 27, 2016 experiment
 
-(def init-matrix {v-accum {:self {:accum {v-accum {:self {:single 1}}}}}})
+(def init-matrix
+  {v-accum {:self {:accum {v-accum {:self {:single 1}}}}}})
 
-(def update-1-matrix-hook {v-identity {:update-1 {:single {v-identity {:update-1 {:single 1}}}}}})
+(def update-1-matrix-hook
+  {v-identity {:update-1 {:single {v-identity {:update-1 {:single 1}}}}}})
 
-(def update-2-matrix-hook {v-identity {:update-2 {:single {v-identity {:update-2 {:single 1}}}}}})
+(def update-2-matrix-hook
+  {v-identity {:update-2 {:single {v-identity {:update-2 {:single 1}}}}}})
 
-(def update-3-matrix-hook {v-identity {:update-3 {:single {v-identity {:update-3 {:single 1}}}}}})
+(def update-3-matrix-hook
+  {v-identity {:update-3 {:single {v-identity {:update-3 {:single 1}}}}}})
 
-(def start-update-of-network-matrix {v-accum {:self {:delta {v-identity {:update-1 {:single 1}}}}}})
+(def start-update-of-network-matrix
+  {v-accum {:self {:delta {v-identity {:update-1 {:single 1}}}}}})
 
-(def start-matrix (rec-map-sum-variadic init-matrix update-1-matrix-hook update-2-matrix-hook 
-                                        update-3-matrix-hook start-update-of-network-matrix))
+(def start-matrix
+  (rec-map-sum-variadic init-matrix update-1-matrix-hook update-2-matrix-hook
+                        update-3-matrix-hook start-update-of-network-matrix))
 
-; note that (render-smart start-matrix)
-; now yields
-; {"accum" {:self {:accum {"accum" {:self {:single 1}}}, :delta {"identity" {:update-1 {:single 1}}}}}, "identity" {:update-1 {:single {"identity" {:update-1 {:single 1}}}}, :update-2 {:single {"identity" {:update-2 {:single 1}}}}, :update-3 {:single {"identity" {:update-3 {:single 1}}}}}}
 
-(def update-1-matrix 
+(def update-1-matrix
   (rec-map-sum {v-accum {:self {:delta {v-identity {:update-1 {:single -1}}}}}}
                {v-accum {:self {:delta {v-identity {:update-2 {:single 1}}}}}}))
 
-(def update-2-matrix 
+(def update-2-matrix
   (rec-map-sum {v-accum {:self {:delta {v-identity {:update-2 {:single -1}}}}}}
                {v-accum {:self {:delta {v-identity {:update-3 {:single 1}}}}}}))
 
-(def update-3-matrix 
+(def update-3-matrix
   (rec-map-sum {v-accum {:self {:delta {v-identity {:update-3 {:single -1}}}}}}
                {v-accum {:self {:delta {v-identity {:update-1 {:single 1}}}}}}))
 
@@ -46,12 +49,33 @@
   ((((extract-matrix current-output) v-accum) :self) :delta))
 
 
-; recording the experiment here on Oct 20 after the switch from accum to (var accum),
-; and from identity to (var identity)
+;;; recording the experiment here on Oct 20 after the switch from
+;;; accum to (var accum), and from identity to (var identity)
+;;;
+;;; also the difference here is that we are using iter-apply-fns to
+;;; run network steps and that we actually re-run the network from the
+;;; start each time (just because it's less typing and because we can)
 
-; also the difference here is that we are using iter-apply-fns to run network steps
-; and that we actually re-run the network from the start each time
-; (just because it's less typing and because we can)
+(comment
+  (->> (iter-apply-fns init-output down-movement up-movement)
+       rest (map-every-other extract-delta)
+       (take 20)
+       (filter v-identity)
+       clojure.pprint/pprint)
+  user>
+  ({#'clojure.core/identity {:update-2 {:single 1}}}
+   {#'clojure.core/identity {:update-3 {:single 1}}}
+   {#'clojure.core/identity {:update-1 {:single 1}}}
+   {#'clojure.core/identity {:update-2 {:single 1}}}
+   {#'clojure.core/identity {:update-3 {:single 1}}}
+   {#'clojure.core/identity {:update-1 {:single 1}}}
+   {#'clojure.core/identity {:update-2 {:single 1}}}
+   {#'clojure.core/identity {:update-3 {:single 1}}}
+   {#'clojure.core/identity {:update-1 {:single 1}}}
+   {#'clojure.core/identity {:update-2 {:single 1}}})
+
+  )
+
 
 ; user=> (extract-delta init-output)
 ; {#'clojure.core/identity {:update-1 {:single 1}}}
@@ -67,4 +91,4 @@
 ; {#'clojure.core/identity {:update-3 {:single 1}}}
 ; user=> (extract-delta (first (drop 12 (iter-apply-fns init-output down-movement up-movement))))
 ; {#'clojure.core/identity {:update-1 {:single 1}}}
- 
+
