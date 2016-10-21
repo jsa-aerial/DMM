@@ -247,11 +247,15 @@
 ; input and output being named the same (e.g. :single); otherwise one would need
 ; a definition like (defn id [x] {:output (x :input)})
 
+(def v-accum (var accum))
+
+(def v-identity (var identity))
+
 ; provisional version of down-movement (UNTESTED, need to define "accum" before it might work)
 
 (defn down-movement [function-named-instance-map-of-outputs]
   (apply-matrix
-    (((function-named-instance-map-of-outputs accum) :self) :single) ; current matrix
+    (((function-named-instance-map-of-outputs v-accum) :self) :single) ; current matrix
     function-named-instance-map-of-outputs ; arg-vector
     3))
 

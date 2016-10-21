@@ -31,6 +31,9 @@
 
 ; auxiliary functions to render funcnames better
 
+; this is likely to become obsolete, as we are replacing f with (var f)
+; in order to fight changes in function references on recompilation
+
 (require '[clojure.string :as str])
 
 (require '[clojure.test :as test])
