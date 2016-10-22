@@ -28,17 +28,20 @@
 (def testmap
   {:a 1 :b 2 :c {:a 1 :b 2 :c {:x 1 :y 3}}})
 
-(defn rec-map-op [op unit? n M]
-  (if (unit? n)
-    M
-    (reduce (fn [M [k v]]
-              (let [new-v
-                    (cond
-                      (map? v) (rec-map-op op unit? n v)
-                      (number? v) (op v n)
-                      :else 0)]
-                (if (nullelt? new-v) M (assoc M k new-v))))
-            {} M)))
+(defn rec-map-op
+  ([op unit? n M]
+   (if (unit? n)
+     M
+     (rec-map-op op n M)))
+  ([op n M]
+   (reduce (fn [M [k v]]
+             (let [new-v
+                   (cond
+                     (map? v) (rec-map-op op n v)
+                     (number? v) (op v n)
+                     :else 0)]
+               (if (nullelt? new-v) M (assoc M k new-v))))
+           {} M)))
 
 
 (defn rec-map-mult [n M]

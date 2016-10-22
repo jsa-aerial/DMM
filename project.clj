@@ -13,8 +13,7 @@
                  [org.clojure/data.json     "0.2.6"]
 
                  [aerial.fs                 "1.1.5"]
-                 [aerial.utils              "1.0.6"]
-                 [aerial.bio.utils          "1.0.0"]
+                 [aerial.utils              "1.0.8"]
 
                  [expectations "2.1.8"]
                  [net.apribase/clj-dns      "0.1.0"] ; reverse-dns-lookup
