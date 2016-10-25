@@ -72,9 +72,9 @@
    {#'clojure.core/identity {:update-2 {:single 1}}}
    {#'clojure.core/identity {:update-3 {:single 1}}}
    {#'clojure.core/identity {:update-1 {:single 1}}}
-   {#'clojure.core/identity {:update-2 {:single 1}}})
+   {#'clojure.core/identity {:update-2 {:single 1}}}))
 
-  )
+
 
 
 ; user=> (extract-delta init-output)
@@ -91,4 +91,3 @@
 ; {#'clojure.core/identity {:update-3 {:single 1}}}
 ; user=> (extract-delta (first (drop 12 (iter-apply-fns init-output down-movement up-movement))))
 ; {#'clojure.core/identity {:update-1 {:single 1}}}
-
