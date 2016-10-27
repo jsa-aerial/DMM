@@ -25,6 +25,26 @@
               (recur (eat-ch1))))))
 
 
+(defn eat-ch1-with-cmd [& args]
+  (let [[v channel] (alts!! [cmdch ch1] :priority true)]
+    (if (= channel cmdch)
+      (if (= v :stop)
+        (println "Stopping - feeder may not be done!")
+        (println "Execute command " v))
+      (if (= v :done)
+        :done
+        (println (str v " has " (count (str v)) " characters"))))))
+
+(def eat-fut
+  (future (loop [v (eat-ch1-with-cmd)]
+            (if (= v :done)
+              :finished
+              (recur (eat-ch1-with-cmd))))))
+
+(def test-ch1-fut (future (feed-ch1 2000)))
+(>!! cmdch :hi)
+
+
 (defn feed-ch1-fns
   [fs ms]
   (loop [n 1
