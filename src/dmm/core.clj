@@ -1,5 +1,7 @@
 (ns dmm.core
-  "The core part of Dataflow Matrix Machine engine")
+  "The core part of Dataflow Matrix Machine engine"
+  (:require [aerial.utils.coll :as coll
+             :refer [rotate]]))
 
 ;;; auxiliary primitives
 
@@ -18,12 +20,6 @@
 ;;; control functions (to organize composition of half-steps
 ;;; in the two-stroke engine, to apply functions only to
 ;;; odd or even members of the resulting sequences, and similar)
-
-(defn rotate
-  ([coll]
-   (rotate 1 coll))
-  ([n coll]
-   (concat (drop n coll) (take n coll))))
 
 (defn iter-apply-fns
   ([m f]
@@ -85,24 +81,25 @@
 
 ;;; add recurrent maps together
 
-(defn rec-map-sum [large-M small-M] ; "large" and "small" express intent
-  (reduce (fn [M [k small-v]]
-            (let [large-v (get large-M k)
-                  l-v (if (not (mORn? large-v)) 0 large-v)
-                  s-v (if (not (mORn? small-v)) 0 small-v)
-                  new-v
-                  (cond
-                    (maps? l-v s-v)  (rec-map-sum l-v s-v)
-                    (mANDn? l-v s-v) (rec-map-sum l-v (numelt s-v))
-                    (mANDn? s-v l-v) (rec-map-sum s-v (numelt l-v))
-                    :else (+ l-v s-v))]
-              (if (nullelt? new-v) (dissoc M k) (assoc M k new-v))))
-          large-M small-M))
+(defn rec-map-sum
+  ([large-M small-M] ; "large" and "small" express intent
+   (reduce (fn [M [k small-v]]
+             (let [large-v (get large-M k)
+                   l-v (if (not (mORn? large-v)) 0 large-v)
+                   s-v (if (not (mORn? small-v)) 0 small-v)
+                   new-v
+                   (cond
+                     (maps? l-v s-v)  (rec-map-sum l-v s-v)
+                     (mANDn? l-v s-v) (rec-map-sum l-v (numelt s-v))
+                     (mANDn? s-v l-v) (rec-map-sum s-v (numelt l-v))
+                     :else (+ l-v s-v))]
+               (if (nullelt? new-v) (dissoc M k) (assoc M k new-v))))
+           large-M small-M))
+  ([rm1 rm2 rm3 & rms]
+   (reduce (fn [new-sum y]
+             (rec-map-sum new-sum y))
+           rm1 (cons rm2 (cons rm3 rms)))))
 
-(defn rec-map-sum-variadic [x & xs]
-  (reduce (fn [new-sum y]
-            (rec-map-sum new-sum y))
-          x xs))
 
 ;;; generalized multiplicative masks and linear combinations
 

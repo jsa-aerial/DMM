@@ -1,5 +1,8 @@
 (ns dmm.examples.oct-28-2016-experiment
-  (:refer dmm.core))
+  (:require [dmm.core :as dc
+             :refer [v-accum v-identity
+                     down-movement up-movement
+                     rec-map-sum]]))
 
 
 ;;; trying to build a very small network to explore asyncronous feeding of
@@ -58,7 +61,7 @@
   {v-accum {:self {:delta {v-identity {:update-1 {:single 1}}}}}})
 
 (def start-matrix
-  (rec-map-sum-variadic init-matrix update-1-matrix-hook update-2-matrix-hook
+  (rec-map-sum init-matrix update-1-matrix-hook update-2-matrix-hook
                         update-3-matrix-hook start-update-of-network-matrix))
 
 
@@ -78,7 +81,7 @@
 ; (def init-output {v-accum {:self {:single init-matrix}}})
 
 (def init-output
-  (rec-map-sum-variadic {v-accum {:self {:single start-matrix}}}
+  (rec-map-sum {v-accum {:self {:single start-matrix}}}
                         {v-identity {:update-1 {:single update-1-matrix}}}
                         {v-identity {:update-2 {:single update-2-matrix}}}
                         {v-identity {:update-3 {:single update-3-matrix}}}))
@@ -98,8 +101,8 @@
 ;;; start each time (just because it's less typing and because we can)
 
 (comment
-  (->> (iter-apply-fns init-output down-movement up-movement)
-       rest (map-every-other extract-delta)
+  (->> (dc/iter-apply-fns init-output down-movement up-movement)
+       rest (dc/map-every-other extract-delta)
        (take 20)
        (filter v-identity)
        clojure.pprint/pprint)
