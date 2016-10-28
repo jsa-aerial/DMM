@@ -11,6 +11,11 @@ https://github.com/jsa-aerial/DMM/blob/master/dmm-snippets.clj
 
 implements linear algebra on recurrent maps.
 
+The current version to be used is contained in
+
+https://github.com/jsa-aerial/DMM/blob/master/src/dmm/core.clj
+
+
 ## Recurrent maps for dataflow matrix machines
 
 At the moment we can just consider dataflow matrix machines
@@ -25,7 +30,7 @@ of input and output streams and their names.
 Fortunately, recurrent maps are rich enough to accommodate
 this diversity. Let's allow only one argument and one
 return result for any built-in stream transformation,
-and let's stipulate that those must be recurrent maps, 
+and let's stipulate that those must be recurrent maps,
 and let's agree that ihe first level of hash-map keys
 would name the respective input and output
 streams and map to their latest values.
@@ -78,4 +83,3 @@ and that should activate it today.
 Caveat 2: we have not yet decided whether to find a place for the
 current values of the input and output streams within the matrix,
 or on the side (something to ponder).
-
