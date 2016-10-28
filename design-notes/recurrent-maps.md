@@ -7,7 +7,7 @@ Recurrent maps are a nice candidate for the role of a "universal vector space".
 
 The initial version of
 
-https://github.com/jsa-aerial/DMM/blob/master/dmm-snippets.clj
+https://github.com/jsa-aerial/DMM/blob/master/Old/dmm-snippets.clj
 
 implements linear algebra on recurrent maps.
 
