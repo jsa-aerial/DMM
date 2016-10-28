@@ -54,3 +54,32 @@
 
 (expect (accum try-input)
         {:single {:b 16, :c {:x 8, :y 24}, :a 8}})
+
+
+;;; Test iter-apply-fns
+(defn g [m]
+  (rec-map-mult 2 m))
+
+(defn h [m]
+  (rec-map-add 3 m))
+
+(defn f [m]
+  (rec-map-div 7 m))
+
+(expect
+ (take 3 (iter-apply-fns testmap g h))
+ '({:a 1, :b 2,
+    :c {:a 1, :b 2, :c {:x 1, :y 3}}}
+   {:a 2, :b 4,
+    :c {:a 2, :b 4, :c {:x 2, :y 6}}}
+   {:a 5, :b 7,
+    :c {:a 5, :b 7, :c {:x 5, :y 9}}}))
+
+(expect
+ (first (drop 9 (iter-apply-fns testmap g h)))
+ {:a 122, :b 154, :c {:a 122, :b 154, :c {:x 122, :y 186}}})
+
+(expect
+ (first (drop 9 (iter-apply-fns testmap g h f)))
+ {:a 209/343, :b 31/49,
+  :c {:a 209/343, :b 31/49, :c {:x 209/343, :y 225/343}}})
