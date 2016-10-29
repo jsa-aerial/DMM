@@ -47,7 +47,9 @@
 ;;; of this type, because it uses this particular channel
 
 (defn reader [dummy]
-  {:signal {:a 1}}) ;(async/alts!! [interface-channel] :default {})})
+  (let [reader-output {:signal ((async/alts!! [interface-channel] :default {:step 1}) 0)}]
+   (clojure.pprint/pprint reader-output)
+   reader-output))
 
 (def v-reader (var reader))
 
@@ -110,16 +112,14 @@
 
 (network-run init-output 1000 10)
 
+;;; to run an experiment
 
-;(network-cycle init-output 1000)
+;;; (future (network-run init-output 1000 300))  ; run for 5 map-indexed
 
-;(def first-input
-;  (down-movement init-output))
+;;; (writer {:a 1}) ; only do this when a network or other consumer
+                    ; for this channel is running to avoid blocking
 
-;(clojure.pprint/pprint first-input)
 
-;(def second-output
-;  (up-movement first-input))
 
 ;;; obsolete code ****************
 
