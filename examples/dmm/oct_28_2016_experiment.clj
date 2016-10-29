@@ -39,6 +39,11 @@
 ;;;   via a different channel: halt the network, change the delay
 ;;;   (the engine speed), etc.
 
+;;; **********************************************
+
+;;; the particular network below demonstrates the async non-blocking input
+;;; and printing an accumulated sum
+
 (def interface-channel (async/chan))
 
 (async/alts!! [interface-channel] :default {})
@@ -59,7 +64,7 @@
   (async/>!! interface-channel input-map))
 
 ;;; printer is a neuron type, an active neuron of this type
-;;; prints its input om each iteration; otehrwise it is an identity neuron
+;;; prints its input om each iteration; otherrwise it is an identity neuron
 
 (defn printer [input]
   (clojure.pprint/pprint input)
@@ -119,56 +124,43 @@
 ;;; (writer {:a 1}) ; only do this when a network or other consumer
                     ; for this channel is running to avoid blocking
 
+;;; **** a fragment of log from proto-repl:
 
-
-;;; obsolete code ****************
-
-(defn extract-matrix [current-output]
-  (((current-output v-accum) :self) :single))
-
-(defn extract-delta [current-output]
-  ((((extract-matrix current-output) v-accum) :self) :delta))
-
-
-;;; recording the experiment here on Oct 20 after the switch from
-;;; accum to (var accum), and from identity to (var identity)
-;;;
-;;; also the difference here is that we are using iter-apply-fns to
-;;; run network steps and that we actually re-run the network from the
-;;; start each time (just because it's less typing and because we can)
-
-(comment
-  (->> (dc/iter-apply-fns init-output down-movement up-movement)
-       rest (dc/map-every-other extract-delta)
-       (take 20)
-       (filter v-identity)
-       clojure.pprint/pprint)
-  user>
-  ({#'clojure.core/identity {:update-2 {:single 1}}}
-   {#'clojure.core/identity {:update-3 {:single 1}}}
-   {#'clojure.core/identity {:update-1 {:single 1}}}
-   {#'clojure.core/identity {:update-2 {:single 1}}}
-   {#'clojure.core/identity {:update-3 {:single 1}}}
-   {#'clojure.core/identity {:update-1 {:single 1}}}
-   {#'clojure.core/identity {:update-2 {:single 1}}}
-   {#'clojure.core/identity {:update-3 {:single 1}}}
-   {#'clojure.core/identity {:update-1 {:single 1}}}
-   {#'clojure.core/identity {:update-2 {:single 1}}}))
-
-
-
-
-; user=> (extract-delta init-output)
-; {#'clojure.core/identity {:update-1 {:single 1}}}
-; user=> (extract-delta (first (drop 2 (iter-apply-fns init-output down-movement up-movement))))
-; {#'clojure.core/identity {:update-2 {:single 1}}}
-; user=> (extract-delta (first (drop 4 (iter-apply-fns init-output down-movement up-movement))))
-; {#'clojure.core/identity {:update-3 {:single 1}}}
-; user=> (extract-delta (first (drop 6 (iter-apply-fns init-output down-movement up-movement))))
-; {#'clojure.core/identity {:update-1 {:single 1}}}
-; user=> (extract-delta (first (drop 8 (iter-apply-fns init-output down-movement up-movement))))
-; {#'clojure.core/identity {:update-2 {:single 1}}}
-; user=> (extract-delta (first (drop 10 (iter-apply-fns init-output down-movement up-movement))))
-; {#'clojure.core/identity {:update-3 {:single 1}}}
-; user=> (extract-delta (first (drop 12 (iter-apply-fns init-output down-movement up-movement))))
-; {#'clojure.core/identity {:update-1 {:single 1}}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 11}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 12}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 13}}
+;;; dmm.examples.oct-28-2016-experiment=>
+;;; true 
+;;; {:signal {:a 1}}
+;;; {:to-print {:step 14}}
+;;; {:signal {:step 1}}
+;;; :to-print {:step 15}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 15, :a 1}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 16, :a 1}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 17, :a 1}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 18, :a 1}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 19, :a 1}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 20, :a 1}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 21, :a 1}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 22, :a 1}}
+;;; dmm.examples.oct-28-2016-experiment=>
+;;; true 
+;;; {:signal {:a 1}}
+;;; {:to-print {:step 23, :a 1}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 24, :a 1}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 24, :a 2}}
+;;; {:signal {:step 1}}
+;;; {:to-print {:step 25, :a 2}}
