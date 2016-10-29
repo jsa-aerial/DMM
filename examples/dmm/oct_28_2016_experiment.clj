@@ -2,7 +2,8 @@
   (:require [dmm.core :as dc
              :refer [v-accum v-identity
                      down-movement up-movement
-                     rec-map-sum]]))
+                     rec-map-sum]]
+            [clojure.core.async :as async]))
 
 
 ;;; trying to build a very small network to explore asyncronous feeding of
@@ -38,53 +39,89 @@
 ;;;   via a different channel: halt the network, change the delay
 ;;;   (the engine speed), etc.
 
+(def interface-channel (async/chan))
 
+(async/alts!! [interface-channel] :default {})
 
-; just sketching this code in anticipation of our next meeting;
-; I'll probably commit the sketch before it works
+;;; reader is a neuron type, but we are only going to have one neuron
+;;; of this type, because it uses this particular channel
 
-; ************ obsolete code below; disregard **********
+(defn reader [dummy]
+  {:signal {:a 1}}) ;(async/alts!! [interface-channel] :default {})})
 
-(def init-matrix
+(def v-reader (var reader))
+
+;;; writer is a gadget to send smth to that neuron
+
+(defn writer [input-map]
+  (async/>!! interface-channel input-map))
+
+;;; printer is a neuron type, an active neuron of this type
+;;; prints its input om each iteration; otehrwise it is an identity neuron
+
+(defn printer [input]
+  (clojure.pprint/pprint input)
+  input)
+
+(def v-printer (var printer))
+
+;;; the network 4 neurons
+
+(def the-network-matrix-hook
   {v-accum {:self {:accum {v-accum {:self {:single 1}}}}}})
 
-(def update-1-matrix-hook
-  {v-identity {:update-1 {:single {v-identity {:update-1 {:single 1}}}}}})
+(def the-reader-hook ; let's hook it from the network matrix itself
+  {v-reader {:the-reader {:dummy {v-accum {:self {:single 1}}}}}})
 
-(def update-2-matrix-hook
-  {v-identity {:update-2 {:single {v-identity {:update-2 {:single 1}}}}}})
+(def the-reader-accum
+  {v-accum {:the-reader-accum {:accum {v-accum {:the-reader-accum {:single 1}}}}}})
 
-(def update-3-matrix-hook
-  {v-identity {:update-3 {:single {v-identity {:update-3 {:single 1}}}}}})
+(def the-printer ; let's hook it from the reader accum (it will be silent
+                 ; until it becomes non-zero, which is OK
+  {v-printer {:the-printer {:to-print {v-accum {:the-reader-accum {:single 1}}}}}})
 
-(def start-update-of-network-matrix
-  {v-accum {:self {:delta {v-identity {:update-1 {:single 1}}}}}})
+;;; connect the-reader to an input of the-reader-accum
+
+(def input-to-accum-link
+  {v-accum {:the-reader-accum {:delta {v-reader {:the-reader {:signal 1}}}}}})
+
+;;; initial network
 
 (def start-matrix
-  (rec-map-sum init-matrix update-1-matrix-hook update-2-matrix-hook
-                        update-3-matrix-hook start-update-of-network-matrix))
-
-
-(def update-1-matrix
-  (rec-map-sum {v-accum {:self {:delta {v-identity {:update-1 {:single -1}}}}}}
-               {v-accum {:self {:delta {v-identity {:update-2 {:single 1}}}}}}))
-
-(def update-2-matrix
-  (rec-map-sum {v-accum {:self {:delta {v-identity {:update-2 {:single -1}}}}}}
-               {v-accum {:self {:delta {v-identity {:update-3 {:single 1}}}}}}))
-
-(def update-3-matrix
-  (rec-map-sum {v-accum {:self {:delta {v-identity {:update-3 {:single -1}}}}}}
-               {v-accum {:self {:delta {v-identity {:update-1 {:single 1}}}}}}))
-
+  (rec-map-sum the-network-matrix-hook the-reader-hook the-reader-accum
+                        the-printer input-to-accum-link))
 
 ; (def init-output {v-accum {:self {:single init-matrix}}})
 
 (def init-output
-  (rec-map-sum {v-accum {:self {:single start-matrix}}}
-                        {v-identity {:update-1 {:single update-1-matrix}}}
-                        {v-identity {:update-2 {:single update-2-matrix}}}
-                        {v-identity {:update-3 {:single update-3-matrix}}}))
+  {v-accum {:self {:single start-matrix}}})
+
+;;; a network cycle with delay
+
+(defn network-cycle [initial-output delay-ms]
+   (Thread/sleep delay-ms)
+   (up-movement (down-movement initial-output)))
+
+(defn network-run [initial-output delay-ms n-iter]
+  (loop [n 1
+         current-output initial-output]
+    (if (< n n-iter)
+      (recur (inc n) (network-cycle current-output delay-ms)))))
+
+(network-run init-output 1000 10)
+
+
+;(network-cycle init-output 1000)
+
+;(def first-input
+;  (down-movement init-output))
+
+;(clojure.pprint/pprint first-input)
+
+;(def second-output
+;  (up-movement first-input))
+
+;;; obsolete code ****************
 
 (defn extract-matrix [current-output]
   (((current-output v-accum) :self) :single))
