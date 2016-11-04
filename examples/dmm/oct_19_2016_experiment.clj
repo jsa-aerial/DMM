@@ -46,9 +46,9 @@
 
 (def init-output
   (rec-map-sum {v-accum {:self {:single start-matrix}}}
-                        {v-identity {:update-1 {:single update-1-matrix}}}
-                        {v-identity {:update-2 {:single update-2-matrix}}}
-                        {v-identity {:update-3 {:single update-3-matrix}}}))
+               {v-identity {:update-1 {:single update-1-matrix}}}
+               {v-identity {:update-2 {:single update-2-matrix}}}
+               {v-identity {:update-3 {:single update-3-matrix}}}))
 
 (defn extract-matrix [current-output]
   (((current-output v-accum) :self) :single))
