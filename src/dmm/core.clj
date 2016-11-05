@@ -239,6 +239,13 @@
 
 (def v-identity (var identity))
 
+;;; auxiliary neuron types
+
+(defn max-norm [input]
+  {:number (rec-map-max-norm input)})
+
+(def v-max-norm (var max-norm))
+
 ;;; current version of down-movement of the two-stroke engine:
 ;;; computing neuron inputs as linear combinations of neuron outputs.
 
