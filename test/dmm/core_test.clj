@@ -71,6 +71,12 @@
 
 (expect (rec-map-<= {:number 0} {:number 0}) true)
 
+(expect (less-or-equal {:left {:number 2} :right {:number 1}})
+  {:true-channel 0 :false-channel 1})
+
+(expect (less-or-equal {:left {:number 1} :right {:number 1}})
+  {:true-channel 1 :false-channel 0})
+
 ;;; Test iter-apply-fns
 (defn g [m]
   (rec-map-mult 2 m))

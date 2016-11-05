@@ -265,6 +265,13 @@
 
 (def v-max-norm (var max-norm))
 
+(defn less-or-equal [input]
+  (if (rec-map-<= (input :left) (input :right))
+    {:true-channel 1 :false-channel 0}
+    {:true-channel 0 :false-channel 1}))
+
+(def v-less-or-equal (var less-or-equal))
+
 ;;; when recurrent maps have compatible shapes, rec-map-mult-mask
 ;;; can be used for point-wise product, and rec-map-lin-comb
 ;;; can be used for scalar product
