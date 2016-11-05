@@ -1,6 +1,6 @@
 (ns dmm.examples.nov-4-2016-experiment
   (:require [dmm.core :as dc
-             :refer [v-accum v-identity
+             :refer [v-accum v-identity v-max-norm
                      down-movement up-movement
                      rec-map-sum]]
             [clojure.core.async :as async]))
@@ -40,7 +40,7 @@
 
 (def v-printer (var printer))
 
-;;; the network 4 neurons
+;;; the network 5 neurons
 
 (def the-network-matrix-hook
   {v-accum {:self {:accum {v-accum {:self {:single 1}}}}}})
@@ -51,9 +51,11 @@
 (def the-reader-accum
   {v-accum {:the-reader-accum {:accum {v-accum {:the-reader-accum {:single 1}}}}}})
 
-(def the-printer ; let's hook it from the reader accum (it will be silent
-                 ; until it becomes non-zero, which is OK
-  {v-printer {:the-printer {:to-print {v-accum {:the-reader-accum {:single 1}}}}}})
+(def the-max-norm ; let's hook it from the reader accum
+  {v-max-norm {:the-max-norm {:input {v-accum {:the-reader-accum {:single 1}}}}}})
+
+(def the-printer ; let's hook it from the max norm
+  {v-printer {:the-printer {:to-print {v-max-norm {:the-max-norm {:number 1}}}}}})
 
 ;;; connect the-reader to an input of the-reader-accum
 
@@ -64,7 +66,7 @@
 
 (def start-matrix
   (rec-map-sum the-network-matrix-hook the-reader-hook the-reader-accum
-                        the-printer input-to-accum-link))
+                        the-max-norm the-printer input-to-accum-link))
 
 ; (def init-output {v-accum {:self {:single init-matrix}}})
 

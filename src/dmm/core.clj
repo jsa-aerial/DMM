@@ -242,6 +242,10 @@
 ;;; auxiliary neuron types
 
 (defn max-norm [input] ; do we need to have a {:number {:number X}} here?
+                       ; no, lin-comb even adds that inside apply-matrix,
+                       ; somewhat annoingly
+  ;;(clojure.pprint/pprint {:norm-input input})
+  ;;(clojure.pprint/pprint {:expect-output (rec-map-max-norm input)})
   {:number (rec-map-max-norm input)})
 
 (def v-max-norm (var max-norm))
