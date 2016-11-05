@@ -241,7 +241,7 @@
 
 ;;; auxiliary neuron types
 
-(defn max-norm [input]
+(defn max-norm [input] ; do we need to have a {:number {:number X}} here?
   {:number (rec-map-max-norm input)})
 
 (def v-max-norm (var max-norm))
