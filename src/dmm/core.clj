@@ -195,6 +195,28 @@
               (assoc new-map k (apply-matrix v arg-vector (- level 1))))
       {} arg-matrix)))
 
+
+;;; auxiliary recurrent maps operations
+
+;;; from clojure.contrib.math/abs - should we just use numeric-tower?
+
+(defn abs "(abs n) is the absolute value of n" [n]
+  (cond
+   (not (number? n)) (throw (IllegalArgumentException.
+                             "abs requires a number"))
+   (neg? n) (- n)
+   :else n))
+
+(defn rec-map-max-norm [M]
+  (reduce (fn [Max-norm [k v]]
+             (let [norm-v
+                   (cond
+                     (map? v) (rec-map-max-norm v)
+                     (number? v) (abs v)
+                     :else 0)]
+               (max Max-norm v)))
+    0 M))
+
 ;;; end of the recurrent maps section
 ;;; ***********************************************************************
 
