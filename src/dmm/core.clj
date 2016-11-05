@@ -250,6 +250,20 @@
 
 (def v-max-norm (var max-norm))
 
+;;; when recurrent maps have compatible shapes, rec-map-mult-mask
+;;; can be used for point-wise product, and rec-map-lin-comb
+;;; can be used for scalar product
+
+(defn mult-mask [input]
+  (:single (rec-map-mult-mask (input :mask) (input :main))))
+
+(defn lin-comb [input]
+  (:single (rec-map-lin-comb (input :mask) (input :main))))
+
+(def v-mult-mask (var mult-mask))
+
+(def v-lin-comb (var lin-comb))
+
 ;;; current version of down-movement of the two-stroke engine:
 ;;; computing neuron inputs as linear combinations of neuron outputs.
 
