@@ -63,6 +63,14 @@
 
 (expect (max-norm {:c -2, :a 1}) {:number 2})
 
+(expect (rec-map-<= {:number 2} {:number 1}) false)
+
+(expect (rec-map-<= {:number 1} {:number 2}) true)
+
+(expect (rec-map-<= {:number 1} {:number 1}) true)
+
+(expect (rec-map-<= {:number 0} {:number 0}) true)
+
 ;;; Test iter-apply-fns
 (defn g [m]
   (rec-map-mult 2 m))
