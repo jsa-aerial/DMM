@@ -214,7 +214,7 @@
                      (map? v) (rec-map-max-norm v)
                      (number? v) (abs v)
                      :else 0)]
-               (max Max-norm v)))
+               (max Max-norm norm-v)))
     0 M))
 
 ;;; end of the recurrent maps section

@@ -55,6 +55,13 @@
 (expect (accum try-input)
         {:single {:b 16, :c {:x 8, :y 24}, :a 8}})
 
+(expect (max-norm {}) {:number 0})
+
+(expect (max-norm {:a 1,:c 1}) {:number 1})
+
+(expect (max-norm {:a 1, :c 2}) {:number 2})
+
+(expect (max-norm {:c -2, :a 1}) {:number 2})
 
 ;;; Test iter-apply-fns
 (defn g [m]
