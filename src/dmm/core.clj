@@ -217,6 +217,21 @@
                (max Max-norm norm-v)))
     0 M))
 
+(defn rec-map-non-negative? [M]
+  (reduce (fn [truth-value [k v]]
+              (let [new-truth-value
+                    (cond
+                      (map? v) (rec-map-non-negative? v)
+                      (number? v) (<= 0 v)
+                      :else true)]
+                (and truth-value new-truth-value)))
+     true M))
+
+(defn rec-map-<= [left right]
+   (rec-map-non-negative?
+     (rec-map-lin-comb {:left -1 :right 1}
+                       {:left left :right right})))
+
 ;;; end of the recurrent maps section
 ;;; ***********************************************************************
 
