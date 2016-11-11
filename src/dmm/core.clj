@@ -1,7 +1,8 @@
 (ns dmm.core
   "The core part of Dataflow Matrix Machine engine"
   (:require [aerial.utils.coll :as coll
-             :refer [rotate]]))
+             :refer [rotate]]
+            [clojure.math.numeric-tower :refer [abs]]))
 
 ;;; auxiliary primitives
 
@@ -198,14 +199,6 @@
 
 ;;; auxiliary recurrent maps operations
 
-;;; from clojure.contrib.math/abs - should we just use numeric-tower?
-
-(defn abs "(abs n) is the absolute value of n" [n]
-  (cond
-   (not (number? n)) (throw (IllegalArgumentException.
-                             "abs requires a number"))
-   (neg? n) (- n)
-   :else n))
 
 (defn rec-map-max-norm [M]
   (reduce (fn [Max-norm [k v]]
