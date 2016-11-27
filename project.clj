@@ -22,7 +22,8 @@
 
   :plugins [[cider/cider-nrepl "0.12.0"]
             [refactor-nrepl    "2.2.0"]
-            [lein-expectations "0.0.8"]]
+            [lein-expectations "0.0.8"]
+            [lein-gorilla "0.3.6"]]
 
 
   ;;:aot :all
