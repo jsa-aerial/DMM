@@ -104,9 +104,12 @@
 
 ;;; to run an experiment
 
-;;; (future (network-run init-output 1000 300))  ; run for 5 minutes
+;;; run for 5 minutes
+;;; (def netfut (future (network-run init-output 1000 300)))
 
-;;; ;;; (writer "hey 235eee" 4321) ; only do this when a network or other consumer
-                                ; for this channel is running to avoid blocking;
-                                ; make sure that the delay is larger than
-                                ; the network delay
+;;; do this when a network or other consumer for this channel is
+;;; running to avoid blocking the thread. make sure that the delay is
+;;; larger than the network delay
+;;;
+;;; (def wtrfut (future (writer "hey 235eee" 4321)))
+;;; (def wtrfut2 (future (writer "hello marion, is that you?" 4321)))
