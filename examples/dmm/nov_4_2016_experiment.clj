@@ -16,7 +16,7 @@
 
 (defn reader [dummy]
   (let [reader-output {:signal ((async/alts!! [interface-channel] :default {}) 0)}]
-   (clojure.pprint/pprint reader-output)
+   (clojure.pprint/pprint ["reader:" reader-output])
    reader-output))
 
 (def v-reader (var reader))
@@ -60,6 +60,15 @@
 (def the-printer-2 ; let's hook it from the reader accum
   {v-printer {:the-printer-2 {:to-print {v-accum {:the-reader-accum {:single 1}}}}}})
 
+(def dummy-identity
+  {v-identity {:dummy-id {:single {v-identity {:dummy-id {:single 1}}}}}})
+
+(def the-printer-tag
+  {v-printer {:the-printer {:tag-the-printer {v-identity {:dummy-id {:single 1}}}}}})
+
+(def the-printer-2-tag
+  {v-printer {:the-printer-2 {:tag-the-printer-2 {v-identity {:dummy-id {:single 1}}}}}})
+
 ;;; connect the-reader to an input of the-reader-accum
 
 (def input-to-accum-link
@@ -69,7 +78,9 @@
 
 (def start-matrix
   (rec-map-sum the-network-matrix-hook the-reader-hook the-reader-accum
-                        the-max-norm the-printer the-printer-2 input-to-accum-link))
+                        the-max-norm the-printer the-printer-2
+                        dummy-identity the-printer-tag the-printer-2-tag
+                        input-to-accum-link))
 
 ; (def init-output {v-accum {:self {:single init-matrix}}})
 
