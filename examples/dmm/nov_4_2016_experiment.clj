@@ -40,7 +40,7 @@
 
 (def v-printer (var printer))
 
-;;; the network 5 neurons
+;;; the network neurons
 
 (def the-network-matrix-hook
   {v-accum {:self {:accum {v-accum {:self {:single 1}}}}}})
@@ -57,6 +57,9 @@
 (def the-printer ; let's hook it from the max norm
   {v-printer {:the-printer {:to-print {v-max-norm {:the-max-norm {:number 1}}}}}})
 
+(def the-printer-2 ; let's hook it from the reader accum
+  {v-printer {:the-printer-2 {:to-print {v-accum {:the-reader-accum {:single 1}}}}}})
+
 ;;; connect the-reader to an input of the-reader-accum
 
 (def input-to-accum-link
@@ -66,7 +69,7 @@
 
 (def start-matrix
   (rec-map-sum the-network-matrix-hook the-reader-hook the-reader-accum
-                        the-max-norm the-printer input-to-accum-link))
+                        the-max-norm the-printer the-printer-2 input-to-accum-link))
 
 ; (def init-output {v-accum {:self {:single init-matrix}}})
 
@@ -82,7 +85,8 @@
 (defn network-run [initial-output delay-ms n-iter]
   (loop [n 1
          current-output initial-output]
-    (if (< n n-iter)
+    (when (< n n-iter)
+      (clojure.pprint/pprint ["network iteration:" n])
       (recur (inc n) (network-cycle current-output delay-ms)))))
 
 ;;; (network-run init-output 1000 10)
