@@ -1,6 +1,6 @@
 (ns dmm.examples.nov-4-2016-experiment
   (:require [dmm.core :as dc
-             :refer [v-accum v-identity v-max-norm
+             :refer [v-accum v-identity v-max-norm v-less-or-equal
                      down-movement up-movement
                      rec-map-sum]]
             [clojure.core.async :as async]))
@@ -32,7 +32,7 @@
         (recur (rest input-chars))))))
 
 ;;; printer is a neuron type, an active neuron of this type
-;;; prints its input om each iteration; otherrwise it is an identity neuron
+;;; prints its input om each iteration; otherwise it is an identity neuron
 
 (defn printer [input]
   (clojure.pprint/pprint input)
@@ -89,9 +89,9 @@
 
 ;;; to run an experiment
 
-;;; (future (network-run init-output 1000 300))  ; run for 5 map-indexed
+;;; (future (network-run init-output 1000 300))  ; run for 5 minutes
 
-;;; ;;; (writer "hey 235" 4321) ; only do this when a network or other consumer
+;;; ;;; (writer "hey 235eee" 4321) ; only do this when a network or other consumer
                                 ; for this channel is running to avoid blocking;
                                 ; make sure that the delay is larger than
                                 ; the network delay
