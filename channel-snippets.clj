@@ -25,6 +25,8 @@
               (recur (eat-ch1))))))
 
 
+(def cmdch (chan 3))
+
 (defn eat-ch1-with-cmd [& args]
   (let [[v channel] (alts!! [cmdch ch1] :priority true)]
     (if (= channel cmdch)
