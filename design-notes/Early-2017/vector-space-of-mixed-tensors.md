@@ -80,13 +80,14 @@ the empty hash-map, `{}`.
 The current implementation of this vector space is by
 functions `rec-map-mult` (multiplication of vector by scalar)
 and `rec-map-sum` (sum of vectors, the case of two arguments
-implements the canonical operation for the definition of vector space).
+implements the canonical operation for the definition of vector space)
+in this file:
 
 https://github.com/jsa-aerial/DMM/blob/master/src/dmm/core.clj
 
 ## Final remark
 
-The description in terms of space of finite trees with intermediate
+The description in terms of the space of finite trees with intermediate
 nodes labeled by legal hash keys from **L** and with real numbers
 as their leaves is a mathematically clean way to think about this space,
 and therefore this description should be considered fundamental.
