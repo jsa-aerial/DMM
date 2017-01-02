@@ -29,7 +29,7 @@ machine learning, namely to denote an N-dimensional matrix.
 If the only path in the tree is of the length 0, we think about the vector in
 question as a scalar (tensor of rank 0).
 
-If all paths are of the lengths 1, we think about the vector in question
+If all paths are of the length 1, we think about the vector in question
 as a one-dimensional vector (tensor of rank 1).
 
 If all paths are of the length 2, we think about the vector in question
@@ -45,6 +45,8 @@ elements of a matrix, etc.
 Therefore, we call an arbitrary **v** from **V** a *mixed tensor*.
 It can contain coordinates for tensors of rank 1, 2, 3, etc, together
 with a scalar (the coordinate for the tensor of rank 0) at the same time.
+
+(The alternative terminology might be a *mixed rank tensor*.)
 
 ## Recurrent maps
 
