@@ -9,11 +9,15 @@ of **P**.
 
 That is, **V** consists of the sets of reals indexed by **P**
 (functions from **P** to reals), such that only finite number of
-those reals are non-zero in every such indexed set. If one considers
+those reals are non-zero in every such indexed set.
+
+<!---
+If one considers
 
 https://en.wikipedia.org/wiki/Examples_of_vector_spaces#Infinite_coordinate_space
 
 we are talking about a co-product (direct sum) of one-dimenstional spaces.
+--->
 
 The reason why we call elements of **P** paths is that we tend to think
 about elements of **V** as *finite trees*. For any given vector **v**,
