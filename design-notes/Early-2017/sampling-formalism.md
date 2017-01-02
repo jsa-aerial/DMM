@@ -62,8 +62,8 @@ value of the flag.
 
 Multiplication by -1 flips the flag.
 
-So, whem one needs to perform the statistical sum with coefficients
-which might be positive or negative, one uses absolute value of
+So, when one needs to perform the statistical sum with coefficients
+which might be positive or negative, one uses absolute values of
 those coefficients to decide which component the statistical sum must
 select, but then if the corresponding coefficient is negative, the
 flag of the selected sample must be flipped.
@@ -80,7 +80,7 @@ distributions with complex coefficients is considered, one uses
 absolute values of those coefficients to decide which component
 the statistical sum must select, but then if the corresponding
 coefficient has phase *psi*, and the selected sample is
-*(x, phi)*, then the resulting sample will be *(x, phi+psi* modulo 2 * *phi)*
+*(x, phi)*, then the resulting sample will be *(x, phi+psi* modulo 2 * *pi)*
 
 The previous section is a partial case of this, with -1 flag corresponding
 to *pi*.
