@@ -1,6 +1,6 @@
 # Sampling formalism
 
-This is a design skecth for future work.
+This is a design sketch for future work.
 
 Vector space of recurrent maps is sufficiently flexible to extend it
 with various constructions. The reserved key `:number` allows to
@@ -19,7 +19,7 @@ In this text we focus on the ability to represent probability
 distributions (or even more general structures, such as signed measures
 or even complex-valued distributions), by samples. The distributions
 in question are vectors (usually over reals, but we just mention
-the complex-valued case, in case there is a desire to considers
+the complex-valued case, in case there is a desire to consider
 complex-valued DMMs in the future). However, the samples can be any
 values with arbitrarily complex structure expressible in Clojure.
 Basically, the distributions can be over any space **X** whatsoever,
@@ -33,15 +33,15 @@ of the underlying distributions.
 We use the reserved key `:sample`, and allow to map it to the
 elements of **X**.
 
-# Linear combination via statistical sum
+## Linear combination via statistical sum
 
 Normally, if one has a *0 < a < 1* coefficient, and one has a sample
 *x* from the probability distribution *P* and a sample *y* from
-the probability dstribution *Q*, then to take a sample from
+the probability distribution *Q*, then to take a sample from
 the linear combination of the distributions *aP+(1-a)Q*, one
 draws a random number *r* uniformly distributed in *[0,1]*,
 and if this number is less than *a*, one takes *x* as the sample
-representing the linear combination. otherwise one take *y*.
+representing the linear combination *aP+(1-a)Q*, otherwise one takes *y*.
 
 This is the way to compute *convex linear combination with
 positive coefficients* for samples of probability distribition via
@@ -80,7 +80,7 @@ distributions with complex coefficients is considered, one uses
 absolute values of those coefficients to decide which component
 the statistical sum must select, but then if the corresponding
 coefficient has phase *psi*, and the selected sample is
-*(x, phi)*, then the resulting sample will be *(x, phi+psi modulo 2*phi)*
+*(x, phi)*, then the resulting sample will be *(x, phi+psi* modulo 2 * *phi)*
 
 The previous section is a partial case of this, with -1 flag corresponding
 to *pi*.
