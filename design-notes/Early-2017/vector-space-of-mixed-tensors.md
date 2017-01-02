@@ -1,6 +1,6 @@
 # Vector space of mixed tensors (recurrent maps)
 
-Consider a countable set **L** which a subset of legal keys for
+Consider a countable set **L** which is a subset of legal keys for
 Clojure hash-maps. Consider finite ordered sequences of non-negative length
 of the elements of **L** and calls those sequences *paths*, and denote the
 set of those paths as **P**. Use **P** as a basis to generate vector space,
@@ -32,8 +32,8 @@ question as a scalar (tensor of rank 0).
 If all paths are of the lengths 1, we think about the vector in question
 as a one-dimensional vector (tensor of rank 1).
 
-If all paths are of the length 2, we think about the vectro in question
-as a matrxi (tensor of rank 2).
+If all paths are of the length 2, we think about the vector in question
+as a matrix (tensor of rank 2).
 
 Et cetera...
 
