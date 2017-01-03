@@ -99,8 +99,9 @@ amd error-free interpretation of such situation.
 First, we supply the answer to this question: if such a situation occurs,
 the rule is that the `:sample` field will be missing in the result.
 
-Theere are a few lines of thought, which can be used to justify this rule.
-The lack of sample is the correct way to sample from zero measure.
+There are a few lines of thought, which can be used to justify this rule.
+
+First of all, the lack of sample is the correct way to sample from zero measure.
 
 Imagine a sub-probability measure with total probability *P<1*. Then it would
 be nice if on *1-P* fraction of the occasions a sample would be missing
