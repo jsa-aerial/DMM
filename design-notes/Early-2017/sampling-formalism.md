@@ -86,3 +86,29 @@ The previous section is a partial case of this, with -1 flag corresponding
 to *pi*.
 
 ## Missing samples and zero measures.
+
+`:sample` leaves can be present on any level of the tree (the recurrent map)
+and can coexist with `:number` leaves and other subtrees. When evaluating
+linear combinations, one simply applies operations described in this text
+instead of the usual numerical operations when `:sample` leaves occur.
+
+A non-trivial consideraion is what to do, if a leaf is picked by a statistical
+sum, but the `:sample` field is missing. It would be nice to have a reasonable
+amd error-free interpretation of such situation.
+
+First, we supply the answer to this question: if such a situation occurs,
+the rule is that the `:sample` field will be missing in the result.
+
+Theere are a few lines of thought, which can be used to justify this rule.
+The lack of sample is the correct way to sample from zero measure.
+
+Imagine a sub-probability measure with total probability *P<1*. Then it would
+be nice if on *1-P* fraction of the occasions a sample would be missing
+(informally speaking, one could think about this as sampling from the
+missing "rest of the distribution").
+
+Then one might think what should happen with probability measures with
+total probability over 1. The whole topic provides quite a bit of material
+for further meditation.
+
+So this document is to serve only as an initial sketch.
