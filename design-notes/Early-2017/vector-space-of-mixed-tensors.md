@@ -20,7 +20,7 @@ we are talking about a co-product (direct sum) of one-dimenstional spaces.
 --->
 
 The reason why we call elements of **P** paths is that we tend to think
-about elements of **V** as *finite trees*. For any given vector **v**,
+about elements of **V** as *finite prefix trees*. For any given vector **v**,
 only the paths **label-1, ..., label-n** which index non-zero
 coordinates of **v** are present, and those non-zero numbers are
 the *leaves* at the end of those paths.
@@ -41,7 +41,7 @@ as a matrix (tensor of rank 2).
 
 Et cetera...
 
-Now consider an arbitrary finite tree from **V**. It contains paths of
+Now consider an arbitrary finite prefix tree from **V**. It contains paths of
 various lengths. Paths of the length 1 correponds to coordinates of
 a one-dimensional vector, paths of the legnth 2 correspond to the
 elements of a matrix, etc.
@@ -91,7 +91,7 @@ https://github.com/jsa-aerial/DMM/blob/master/src/dmm/core.clj
 
 ## Final remark
 
-The description in terms of the space of finite trees with intermediate
+The description in terms of the space of finite prefix trees with intermediate
 nodes labeled by legal hash keys from **L** and with real numbers
 as their leaves is a mathematically clean way to think about this space,
 and therefore this description should be considered fundamental.
