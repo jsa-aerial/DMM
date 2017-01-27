@@ -13,6 +13,8 @@
                  ;;[org.clojure/core.async    "0.1.346.0-17112a-alpha"]
                  [org.clojure/data.json     "0.2.6"]
 
+                 [com.rpl/specter          "0.13.2"]
+                 
                  [aerial.fs                 "1.1.5"]
                  [aerial.utils              "1.0.8"]
 
