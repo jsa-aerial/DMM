@@ -39,4 +39,20 @@ belong to the population, but it's OK to have zero
 probability/zero chance of being sampled from
 associated with any subset of that.
 
+## Methods for adapting the sampling schemas
+
+The first thing which comes to mind is to use evolutionary
+methods to evolve probability distrubutions over coordinates.
+
+The credit assignment problem here is interesting. In the
+simplest version, one could simply use the local change
+in the cost function after one step to evaluate the fitness
+of a selected coordinate and to adjust its weight in the distribution.
+
+But, obviously, there is a lot of room for experimentaion here.
+
+## Notes
+
+We are indebted to adaptive coordinate descent, and to
+a variety of other ideas.
 
