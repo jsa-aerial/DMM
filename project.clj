@@ -3,7 +3,7 @@
   :url "https://github.com/jsa-aerial/DMM"
   :license {:name "The MIT License (MIT)"
             :url "http://opensource.org/licenses/MIT"}
-  :dependencies [;;[org.clojure/clojure "1.9.0-alpha10"]
+  :dependencies [;;[org.clojure/clojure "1.9.0-alpha16"]
                  [org.clojure/clojure "1.8.0"]
                  [net.mikera/vectorz-clj "0.45.0"]
                  [org.clojure/tools.nrepl  "0.2.12"] ; Explicit nREPL
