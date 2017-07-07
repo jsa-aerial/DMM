@@ -5,6 +5,7 @@
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [;;[org.clojure/clojure "1.9.0-alpha16"]
                  [org.clojure/clojure "1.8.0"]
+                 [quil "2.6.0"]
                  [net.mikera/vectorz-clj "0.45.0"]
                  [org.clojure/tools.nrepl  "0.2.12"] ; Explicit nREPL
                  [proto-repl "0.3.1"] ; for Atom editor
