@@ -51,24 +51,17 @@
 (defn setup []
   ; Set frame rate to 4 frames per second.
   (q/frame-rate 4)
-  ; Set color mode to HSB (HSV) instead of default RGB.
-  ;(q/color-mode :hsb)
   ; setup function returns initial state. It contains
-  ; circle color and position.
+  ; the initial output layer of the generalized neural network.
   {:output-layer (init-output)
-   ;:color 0
-   ;:rect-color 0
-   ;:angle 0
    })
 
 (defn update-state [state]
-  ; Update sketch state by changing circle color and position.
+  ; Update sketch state by performing one cycle of the "two-stroke engine"
+  ; of the generalized neural network.
   (let [current-input (down-movement (:output-layer state))]
     {:input-layer current-input
      :output-layer (up-movement current-input)
-     ;:color (mod (+ (:color state) 0.7) 255)
-     ;:rect-color (mod (+ (:rect-color state) 0.07) 255)
-     ;:angle (+ (:angle state) 0.1)
      }))
 
 
@@ -90,7 +83,7 @@
               ))
 
 (q/defsketch quil-try
-  :title "You spin my circle right round"
+  :title "A Quil-controlled DMM"
   :size [800 600]
   ; setup function called only once, during sketch initialization.
   :setup setup
