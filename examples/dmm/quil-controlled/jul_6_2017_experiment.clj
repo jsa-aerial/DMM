@@ -74,12 +74,16 @@
 
 (defn draw-state [state]
   ; Clear the sketch by filling it with grey color.
-  (q/background 127)
+  ;(q/background 127)
+
+  (q/fill 127 50)
+  (q/rect 0 0 (q/width) (q/height))
+  (q/fill 0)
 
   (q/text-size 24)
 
   (let [sub-delta-row (->> state :output-layer extract-delta)]
-    (q/text (str (q/frame-count) " " sub-delta-row)  50 (+ 50 (* 5 (q/frame-count))))       
+    (q/text (str (q/frame-count) " " sub-delta-row)  50  (mod (+ 50 (* 25 (q/frame-count))) (q/height)))       
               ))
 
 (q/defsketch quil-try
