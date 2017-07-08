@@ -6,54 +6,76 @@
                               down-movement up-movement
                               rec-map-sum]]))
 
-(defn init-output []
-  (def init-matrix
-    {v-accum {:self {:accum {v-accum {:self {:single 1}}}}}})
+(defn init-state []
+  (->
+   {}
 
-  (def update-1-matrix-hook
-    {v-identity {:update-1 {:single {v-identity {:update-1 {:single 1}}}}}})
+   ((fn[m]
+      (assoc m 
 
-  (def update-2-matrix-hook
-    {v-identity {:update-2 {:single {v-identity {:update-2 {:single 1}}}}}})
+             :init-matrix
+             {v-accum {:self {:accum {v-accum {:self {:single 1}}}}}}
 
-  (def update-3-matrix-hook
-    {v-identity {:update-3 {:single {v-identity {:update-3 {:single 1}}}}}})
+             :update-1-matrix-hook
+             {v-identity
+              {:update-1 {:single {v-identity {:update-1 {:single 1}}}}}}
+             
+             :update-2-matrix-hook
+             {v-identity
+              {:update-2 {:single {v-identity {:update-2 {:single 1}}}}}}
+             
+             :update-3-matrix-hook
+             {v-identity
+              {:update-3 {:single {v-identity {:update-3 {:single 1}}}}}}
+             
+             :start-update-of-network-matrix
+             {v-accum {:self {:delta {v-identity {:update-1 {:single 1}}}}}})))
 
-  (def start-update-of-network-matrix
-    {v-accum {:self {:delta {v-identity {:update-1 {:single 1}}}}}})
+   ((fn[m]
+      (assoc m :start-matrix
+             (rec-map-sum
+              (m :init-matrix)
+              (m :update-1-matrix-hook)
+              (m :update-2-matrix-hook)
+              (m :update-3-matrix-hook)
+              (m :start-update-of-network-matrix)))))
+   
+   
+   ((fn[m]
+      (assoc m
+             :update-1-matrix
+             (rec-map-sum
+              {v-accum {:self {:delta {v-identity {:update-1 {:single -1}}}}}}
+              {v-accum {:self {:delta {v-identity {:update-2 {:single 1}}}}}})
+             
+             :update-2-matrix
+             (rec-map-sum
+              {v-accum {:self {:delta {v-identity {:update-2 {:single -1}}}}}}
+              {v-accum {:self {:delta {v-identity {:update-3 {:single 1}}}}}})
+             
+             :update-3-matrix
+             (rec-map-sum
+              {v-accum {:self {:delta {v-identity {:update-3 {:single -1}}}}}}
+              {v-accum {:self{:delta {v-identity {:update-1 {:single 1}}}}}}))))
+   
+   ((fn[m]
+      (assoc m :init-output
+             (rec-map-sum
+              {v-accum {:self {:single (m :start-matrix)}}}
+              {v-identity {:update-1 {:single (m :update-1-matrix)}}}
+              {v-identity {:update-2 {:single (m :update-2-matrix)}}}
+              {v-identity {:update-3 {:single (m :update-3-matrix)}}}))))))
 
-  (def start-matrix
-    (rec-map-sum
-      init-matrix update-1-matrix-hook update-2-matrix-hook
-      update-3-matrix-hook start-update-of-network-matrix))
+(def state (atom (init-state)))
 
 
-  (def update-1-matrix
-    (rec-map-sum {v-accum {:self {:delta {v-identity {:update-1 {:single -1}}}}}}
-                 {v-accum {:self {:delta {v-identity {:update-2 {:single 1}}}}}}))
-
-  (def update-2-matrix
-    (rec-map-sum {v-accum {:self {:delta {v-identity {:update-2 {:single -1}}}}}}
-                 {v-accum {:self {:delta {v-identity {:update-3 {:single 1}}}}}}))
-
-  (def update-3-matrix
-    (rec-map-sum {v-accum {:self {:delta {v-identity {:update-3 {:single -1}}}}}}
-                 {v-accum {:self {:delta {v-identity {:update-1 {:single 1}}}}}}))
-
-  (def init-output
-    (rec-map-sum {v-accum {:self {:single start-matrix}}}
-                 {v-identity {:update-1 {:single update-1-matrix}}}
-                 {v-identity {:update-2 {:single update-2-matrix}}}
-                 {v-identity {:update-3 {:single update-3-matrix}}}))
-  init-output
-)
 
 (defn setup []
   ; Set frame rate to 4 frames per second.
   (q/frame-rate 4)
   ; setup function returns initial state. It contains
   ; the initial output layer of the generalized neural network.
-  {:output-layer (init-output)
+  {:output-layer (@state :init-output)
    })
 
 (defn update-state [state]
