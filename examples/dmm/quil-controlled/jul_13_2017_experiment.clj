@@ -1,4 +1,4 @@
-(ns dmm.examples.quil-controlled.jul-6-2017-experiment
+(ns dmm.examples.quil-controlled.jul-13-2017-experiment
   (:require [quil.core :as q]
             [quil.middleware :as m] 
             [dmm.core :as dc
@@ -22,8 +22,8 @@
 (defn dmm-cons [accum-style-input]
   (let [old-self (accum-style-input :self)]
     (if (get-in accum-style-input [:signal :flag])
-      {:this (accum-style-input :signal) :rest old-self}
-      old-self)))
+      {:self {:this (accum-style-input :signal) :rest old-self}}
+      {:self old-self})))
 
 (def v-dmm-cons (var dmm-cons))	  
 
@@ -58,7 +58,7 @@
 			 
 			 :dmm-cons-signal-connection
 			 {v-dmm-cons {:my-list {:signal 
-			  {v-mouse-pressed-monitor {:mouse-pressed-monitor {:single 1}}}}}})))
+			  {v-mouse-pressed-monitor {:mouse-pressed-monitor {:signal 1}}}}}})))
 
    ((fn[m]
       (assoc m :start-matrix
@@ -107,8 +107,20 @@
   ; "quil quirk" - the first iteration "draw-state" happens
   ;                without "update-state" 
 
+(defn extract-list [current-output]
+   ((current-output v-dmm-cons) :self))
+  
 (defn extract-mouse-pressed-monitor [current-output]
   (current-output v-mouse-pressed-monitor))
+
+(defn render-list [recorded-list horizontal-shift]
+  ;(q/text (str recorded-list) 25 25)
+  (when (not= (recorded-list :end-list) 1)
+       (q/no-fill)
+       (q/rect horizontal-shift 25 25 25)
+       (q/fill 0)
+       (render-list (recorded-list :rest) (+ horizontal-shift 30)) 
+    ))
 
 
 (defn draw-state [state]
@@ -117,12 +129,19 @@
 
   (q/fill 127 50)
   (q/rect 0 0 (q/width) (q/height))
-  (q/fill 0)
 
+  (q/fill 0)
+  
   (q/text-size 24)
 
+  ;(q/text "Start" 25 25)
+  
+  (q/text (str ((state :output-layer) v-dmm-cons)) 25 (mod (* 50 (q/frame-count)) (q/height)))
+  
+  ;(render-list (extract-list (state :output-layer)) 0)
+  
   (let [sub-delta-row (->> state :output-layer extract-mouse-pressed-monitor)]
-    (q/text (str (q/frame-count) " " sub-delta-row)  50  (mod (+ 50 (* 25 (q/frame-count))) (q/height)))       
+    (q/text (str (q/frame-count) " " sub-delta-row)  50  (mod (+ 25 (* 50 (q/frame-count))) (q/height)))       
               ))
 
 (defn mouse-pressed [state event]
