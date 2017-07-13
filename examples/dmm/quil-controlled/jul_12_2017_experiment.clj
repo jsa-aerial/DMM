@@ -66,7 +66,9 @@
   ((((extract-matrix current-output) v-accum) :self) :delta))
 
 (defn extract-mouse-position [current-output]
-  ((current-output v-mouse-coords) :mouse-position))
+  (get (current-output v-mouse-coords) :mouse-position "quil quirk"))
+  ; "quil quirk" - the first iteration "draw-state" happens
+  ;                without "update-state" 
 
 
 (defn draw-state [state]
