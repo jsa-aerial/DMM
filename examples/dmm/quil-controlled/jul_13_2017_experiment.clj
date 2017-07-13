@@ -10,7 +10,12 @@
 (def mouse-pressed-channel (async/chan 10))
 
 (defn mouse-pressed-monitor [dummy]
-  {:signal ((async/alts!! [mouse-pressed-channel] :default {}) 0)})
+  (let [signal ((async/alts!! [mouse-pressed-channel] :default {}) 0)]
+    {:signal
+     (if (= signal {})
+       {}
+       {:x (signal :x) :y (signal :y) :flag 1})}))
+  ; might want to add a transformation of :button field too
 
 (def v-mouse-pressed-monitor (var mouse-pressed-monitor))
 
