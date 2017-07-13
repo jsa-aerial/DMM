@@ -19,6 +19,13 @@
 
 (def v-mouse-pressed-monitor (var mouse-pressed-monitor))
 
+(defn dmm-cons [accum-style-input]
+  (let [old-self (accum-style-input :self)]
+    (if (get-in accum-style-input [:signal :flag])
+      {:this (accum-style-input :signal) :rest old-self}
+      old-self)))
+
+(def v-dmm-cons (var dmm-cons))	  
 
 ;;; the neurons of this type track mouse position
 ;;; we treat X and Y mouse coordinates as separate outputs
@@ -44,18 +51,29 @@
 
              :mouse-pressed-monitor-hook
              {v-mouse-pressed-monitor {:mouse-pressed-monitor {:single 
-              {v-mouse-pressed-monitor {:mouse-pressed-monitor {:single 1}}}}}})))
+              {v-mouse-pressed-monitor {:mouse-pressed-monitor {:single 1}}}}}}
+			  
+			 :dmm-cons-accum-connection
+			 {v-dmm-cons {:my-list {:self {v-dmm-cons {:my-list {:self 1}}}}}}
+			 
+			 :dmm-cons-signal-connection
+			 {v-dmm-cons {:my-list {:signal 
+			  {v-mouse-pressed-monitor {:mouse-pressed-monitor {:single 1}}}}}})))
 
    ((fn[m]
       (assoc m :start-matrix
              (rec-map-sum
               (m :init-matrix)
               (m :mouse-tracking-neuron-hook)
-              (m :mouse-pressed-monitor-hook)))))
+              (m :mouse-pressed-monitor-hook)
+			  (m :dmm-cons-accum-connection)
+			  (m :dmm-cons-signal-connection)))))
    
    ((fn[m]
       (assoc m :init-output
-             {v-accum {:self {:single (m :start-matrix)}}})))))
+	        (rec-map-sum
+             {v-accum {:self {:single (m :start-matrix)}}}
+			 {v-dmm-cons {:my-list {:self {:end-list 1}}}}))))))
 
 (def state (atom (init-state)))
 
