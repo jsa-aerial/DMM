@@ -108,7 +108,7 @@
   ;                without "update-state" 
 
 (defn extract-list [current-output]
-   ((current-output v-dmm-cons) :self))
+   (((current-output v-dmm-cons) :my-list) :self))
   
 (defn extract-mouse-pressed-monitor [current-output]
   (current-output v-mouse-pressed-monitor))
@@ -117,7 +117,7 @@
   ;(q/text (str recorded-list) 25 25)
   (when (not= (recorded-list :end-list) 1)
        (q/no-fill)
-       (q/rect horizontal-shift 25 25 25)
+       (q/rect horizontal-shift (mod (+ 30 (* 50 (q/frame-count))) (q/height)) 20 20)
        (q/fill 0)
        (render-list (recorded-list :rest) (+ horizontal-shift 30)) 
     ))
@@ -136,9 +136,11 @@
 
   ;(q/text "Start" 25 25)
   
-  (q/text (str ((state :output-layer) v-dmm-cons)) 25 (mod (* 50 (q/frame-count)) (q/height)))
-  
-  ;(render-list (extract-list (state :output-layer)) 0)
+  ;(q/text (str ((state :output-layer) v-dmm-cons)) 25 (mod (* 50 (q/frame-count)) (q/height)))
+ 
+  ;(q/text (str (extract-list (state :output-layer))) 25 (mod (* 50 (q/frame-count)) (q/height)))
+ 
+  (render-list (extract-list (state :output-layer)) 50)
   
   (let [sub-delta-row (->> state :output-layer extract-mouse-pressed-monitor)]
     (q/text (str (q/frame-count) " " sub-delta-row)  50  (mod (+ 25 (* 50 (q/frame-count))) (q/height)))       
