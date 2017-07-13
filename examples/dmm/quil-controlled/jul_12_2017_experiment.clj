@@ -1,4 +1,4 @@
-(ns dmm.examples.quil-controlled.jul-6-2017-experiment
+(ns dmm.examples.quil-controlled.jul-12-2017-experiment
   (:require [quil.core :as q]
             [quil.middleware :as m] 
             [dmm.core :as dc
