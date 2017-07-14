@@ -1,0 +1,205 @@
+\documentclass{beamer}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{verbatim}
+
+
+
+\setbeamertemplate{frametitle}[default][center]
+
+
+\begin{document}
+
+\title{Dataflow matrix machines and V-values}
+\author{Michael Bukatin and Jon Anthony}
+
+ \date
+{\footnotesize \url{https://github.com/jsa-aerial/DMM}\\[5ex]
+July 13, 2017 lightning talk at
+\url{https://www.meetup.com/Boston-Clojure-Group/events/240535773/}}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Recurrent neural networks}
+
+\begin{center}
+
+\begin{tikzpicture}
+ %  \clip (-2.0, -2.0) rectangle (4.0, 2.0);
+%   \draw (3.0, -2.0) rectangle (6.5, 2.0);
+   \draw [->] (-0.8, 0) -- (-0.8, 1) node [left] {$i_m$};
+   \draw [->] (-1.6, 0) -- (-1.6, 1) node [left] {$i_1$};
+   \filldraw (-1.2,0) circle [radius=0.5pt]
+                 (-1.4,0)  circle [radius=0.5pt]
+                 (-1.0, 0) circle [radius=0.5pt]
+                 (-0.8, 0) circle [radius=1pt]
+                 (-1.6, 0) circle [radius=1pt];
+
+ 
+
+   \draw [->] (-0.4, -1) node [left] {$x_1$} -- (-0.4, 1) node [midway, above right] {$f_1$} node [right] {$y_1$};
+   \draw [->] (0.4, -1)  node [left] {$x_k$} -- (0.4, 1) node [midway, above right] {$f_k$} node [right] {$y_k$};
+   \filldraw (0,0) circle [radius=0.5pt]
+                 (-0.2,0)  circle [radius=0.5pt]
+                 (0.2, 0) circle [radius=0.5pt];
+
+   \draw (0.8, -1) node [right] {$o_1$} -- (0.8, 0);
+   \draw (1.6, -1) node [right] {$o_n$} -- (1.6, 0);
+   \filldraw (1.2,0) circle [radius=0.5pt]
+                 (1.4,0)  circle [radius=0.5pt]
+                 (1.0, 0) circle [radius=0.5pt]
+                 (0.8, 0) circle [radius=1pt]
+                 (1.6, 0) circle [radius=1pt]; 
+
+  \draw [->, very thick] (0, 1.2) .. controls (3.5, 4.2) and (3.5, -4.2) .. (0, -1.2)  node [midway, right] {{\bf W}};
+
+\end{tikzpicture}
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Dataflow matrix machines}
+
+\begin{center}
+
+\begin{tikzpicture}
+   %\clip (-3.5, -2.0) rectangle (7.0, 2.0);
+
+  \filldraw (-3.2,0) circle [radius=0.5pt]
+                (-3.0,0)  circle [radius=0.5pt]
+                (-3.4, 0) circle [radius=0.5pt]; 
+
+   \draw [->] (-1.2, 0) -- (-0.8, 1) node [right] {$y_{2,C_1}$};
+   \draw [->] (-1.2, 0) -- (-1.6, 1) node [left] {$y_{1,C_1}$};
+   \draw (-2.0, -1)  node [left] {$x_{1,C_1}$} -- (-1.2, 0);
+   \draw (-1.2, -1)  node [below] {$x_{2,C_1}$} -- (-1.2, 0) node [left] {$f_{C_1}$};
+   \draw (-0.4, -1)  node [right] {$x_{3,C_1}$} -- (-1.2, 0);
+
+
+  \filldraw (0,0) circle [radius=0.5pt]
+                (-0.2,0)  circle [radius=0.5pt]
+                (0.2, 0) circle [radius=0.5pt];
+
+
+   \draw (1.6, -1) node [left] {$x_{1,C_2}$} -- (2.0, 0)  node [left] {$f_{C_2}$};;
+   \draw (2.4, -1) node [right] {$x_{2,C_2}$} -- (2.0, 0);
+   \draw [->] (2.0, 0) -- (1.2, 1) node [left] {$y_{1,C_2}$};
+   \draw [->] (2.0, 0) -- (2.0, 1) node [above] {$y_{2,C_2}$};
+   \draw [->] (2.0, 0) -- (2.8, 1) node [right] {$y_{3,C_2}$};
+
+
+  \filldraw (3.2,0) circle [radius=0.5pt]
+                (3.0,0)  circle [radius=0.5pt]
+                (3.4, 0) circle [radius=0.5pt]; 
+
+
+  \draw [->, very thick] (0.5, 1.2) .. controls (5.5, 4.2) and (5.5, -4.2) .. (0.5, -1.2)  node [midway, right] {{\bf W}};
+
+ 
+
+\end{tikzpicture}
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Dataflow matrix machines\\  based on
+ streams of  V-values
+ and
+ variadic neurons}
+
+\begin{center}
+
+\begin{tikzpicture}
+  % \clip (-3.5, -2.0) rectangle (7.0, 2.0);
+
+  \filldraw (-3.2,0) circle [radius=0.5pt]
+                (-3.0,0)  circle [radius=0.5pt]
+                (-3.4, 0) circle [radius=0.5pt]; 
+
+  \draw [->] (-2.6, -1.5) node[right] {$x_{f, n_f}$} -- (-2.6, 1.5) node [midway, above right] {$f$} node[right] {$y_{f, n_f}$};
+
+  \filldraw (0,0) circle [radius=0.5pt]
+                (-0.2,0)  circle [radius=0.5pt]
+                (0.2, 0) circle [radius=0.5pt];
+
+  \draw [->] (0.6, -1.5) node[right] {$x_{g, n_g}$} -- (0.6, 1.5) node [midway, above right] {$g$} node[right] {$y_{g, n_g}$};
+
+  \filldraw (3.2,0) circle [radius=0.5pt]
+                (3.0,0)  circle [radius=0.5pt]
+                (3.4, 0) circle [radius=0.5pt]; 
+
+
+  \draw [->, very thick] (1.1, 1.1) .. controls (5.5, 4.3) and (5.5, -4.0) .. (1.1, -0.8)  node [midway, right] {{\bf W}};
+
+  \foreach \y in {-1.0, 1.0}
+    {
+
+      \draw [densely dotted] (0.45, \y+0.15) ellipse [x radius=100pt, y radius=4pt];
+
+     \foreach \x in {-1.0, 2.2}
+       {
+
+        \foreach \d in {-0.4, -0.15, 0.1}
+           {
+               \draw(\x-0.15, \y + 0.45) -- (\x+\d, \y+0.15); 
+               \draw (\x+\d, \y + 0.15) -- (\x+\d-0.08, \y-0.15);
+               \draw (\x+\d, \y + 0.15) -- (\x+\d+0.08, \y-0.15);
+               \filldraw (\x+0.5*\d-0.05, \y-0.25) circle [radius=0.2pt];
+               \filldraw (\x+0.5*\d+0.5, \y+0.15) circle [radius=0.2pt];
+           }
+       } 
+     }
+ 
+\end{tikzpicture}
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Examples}
+
+{\footnotesize \tt \{:number 3.5, :foo \{:number 2, :bar 7\},\\ \ :baz \{:foo \{:bar -4\}\}\} ; a V-value }\\[2ex]
+
+Activation function for a variadic neuron:
+{\footnotesize
+\begin{verbatim}
+(defn accum [input]
+   {:single (rec-map-sum (input :accum) (input :delta))})
+\end{verbatim}
+}
+
+{\footnotesize \tt (def v-accum (var accum)) ; a neuron type}\\[2ex] 
+
+Making neuron {\footnotesize \tt \{v-accum :self\}} an accumulator:\\[2ex]
+
+{\footnotesize \tt \{v-accum \{:self \{:accum\\ \ \{v-accum \{:self \{:single 1\}\}\}\}\}\}}
+
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Links}
+
+Paper (in preparation):
+{\footnotesize \url{https://github.com/jsa-aerial/DMM/blob/master/doc/dmm-and-v-values-manuscript.pdf}}\\[6ex]
+
+Quil-controlled  DMMs:
+{\footnotesize \url{https://github.com/jsa-aerial/DMM/tree/master/examples/dmm/quil-controlled}}
+
+\end{frame}
+
+\end{document}
