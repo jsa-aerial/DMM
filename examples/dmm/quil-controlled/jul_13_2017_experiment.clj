@@ -80,8 +80,8 @@
 
 
 (defn setup []
-  ; Set frame rate to 4 frames per second.
-  (q/frame-rate 4)
+  ; Set frame rate to 1 frame per second, so that one has time to ponder things.
+  (q/frame-rate 1)
   ; setup function returns initial state. It contains
   ; the initial output layer of the generalized neural network.
   {:output-layer (@state :init-output)
@@ -119,6 +119,9 @@
        (q/no-fill)
        (q/rect horizontal-shift (mod (+ 30 (* 50 (q/frame-count))) (q/height)) 20 20)
        (q/fill 0)
+	   (q/ellipse  (+ (int (/ (* 20 ((recorded-list :this) :x)) (q/width))) horizontal-shift)
+	               (+ (int (/ (* 20 ((recorded-list :this) :y)) (q/height))) (mod (+ 30 (* 50 (q/frame-count))) (q/height)))
+             	   3 3)
        (render-list (recorded-list :rest) (+ horizontal-shift 30)) 
     ))
 
