@@ -35,8 +35,8 @@ happened in the network.
   of inputs might be very useful in this context ("first set-up the edit,
   then perform it").  
  
-  2. Usually, one would link them to the output of an event-tracking
-  neuron (such as click-tracking neuron). They does incur one cycle delay
+  2. Usually, one would link the neurons triggered by events to the output of an event-tracking
+  neuron (such as click-tracking neuron). This does incur one cycle delay
   in action.
   
     * If there is extra urgency in processing the event, one can hack
