@@ -1,18 +1,18 @@
 # Lessons from July 13, 2017 experiment
 
-A Quil-controlled network, which a neuron tracking mouse-pressed events,
+A Quil-controlled network, with a neuron tracking "mouse-pressed" events,
 and a neuron accumulating a list of non-trivial inputs.
 
 
-## Lessons from a list-accumulating neuron.
+## Lessons from the list-accumulating neuron.
 
   1. The accumulator metaphor can be used not only to accumulate sums,
   but to accumulate complex data structures, e.g. lists.
   
-  One still connects an input and an output of the neuron in question
-  with weight one. A fruitful idiom is to usually have the identity transform
-  between this input and this output built into the neuron, except if
-  something interesting came on some other inputs.
+    * One still connects an input and an output of the neuron in question
+    with weight one. A fruitful idiom is to usually have the identity transform
+    between this input and this output built into the neuron, except if
+    something interesting came on some other inputs.
 
   2. In particular, a neuron can keep a log of its activity via this
   mechanism, and to have this log handy as one of the inputs.
