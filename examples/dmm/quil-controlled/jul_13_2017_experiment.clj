@@ -54,7 +54,7 @@
               {v-mouse-pressed-monitor {:mouse-pressed-monitor {:single 1}}}}}}
 
              :dmm-cons-accum-connection
-             {v-dmm-cons {:my-list {:self {v-dmm-cons {:my-list {:self 1}}}}}}
+             {v-dmm-cons {:my-list {:self {v-dmm-cons {:my-list {:self 0.9}}}}}}
 
              :dmm-cons-signal-connection
              {v-dmm-cons {:my-list {:signal
@@ -115,7 +115,7 @@
 
 (defn render-list [recorded-list horizontal-shift]
   ;;(q/text (str recorded-list) 25 25)
-  (when (not= (recorded-list :end-list) 1)
+  (when (not (recorded-list :end-list))
     (q/no-fill)
     (q/rect horizontal-shift (mod (+ 30 (* 50 (q/frame-count))) (q/height)) 20 20)
     (q/fill 0)
