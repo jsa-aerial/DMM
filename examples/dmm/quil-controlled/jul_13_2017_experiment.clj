@@ -54,7 +54,7 @@
               {v-mouse-pressed-monitor {:mouse-pressed-monitor {:single 1}}}}}}
 
              :dmm-cons-accum-connection
-             {v-dmm-cons {:my-list {:self {v-dmm-cons {:my-list {:self 0.9}}}}}}
+             {v-dmm-cons {:my-list {:self {v-dmm-cons {:my-list {:self 1}}}}}}
 
              :dmm-cons-signal-connection
              {v-dmm-cons {:my-list {:signal
