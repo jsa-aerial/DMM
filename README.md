@@ -5,7 +5,7 @@ A one-page overview:
 
 http://www.cs.brandeis.edu/~bukatin/dataflow-matrix-machines-2016.pdf
 
-Recent preprint:
+A LearnAut 2017 paper:
 
 https://arxiv.org/abs/1706.00648
 
