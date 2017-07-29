@@ -26,9 +26,11 @@ In any case, we'll be talking about a one-to-one
 correspondence (a bijection) between a finite set of
 general hash key triplets (which should include
 all triplets present in the network matrix at the
-moment) and a finite set of numbers; and we'd like
+moment, as column indices or as row indices) 
+and a finite set of numbers; and we'd like
 an option to manually control this correspondence
-while enforcing its correctness (such as the same
+while enforcing its correctness (e.g. a correctness
+condition that the same
 number does not correspond to different triplets,
 etc.).
 
@@ -37,7 +39,7 @@ etc.).
 First of all, note that these reshapings between
 three-dimensional and one-dimensional arrays are
 very simple linear operators, and they can be
-supported inside the network, or they can supported
+supported inside the network, or they can be supported
 as "extra" support mechanisms which are not
 implemented as parts of the network.
 
