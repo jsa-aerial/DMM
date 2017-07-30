@@ -120,8 +120,8 @@
     (q/rect horizontal-shift (mod (+ 30 (* 50 (q/frame-count))) (q/height)) 20 20)
     (q/fill 0)
     (q/ellipse
-     (+ (int (/ (* 20 ((recorded-list :this) :x)) (q/width))) horizontal-shift)
-     (+ (int (/ (* 20 ((recorded-list :this) :y)) (q/height))) (mod (+ 30 (* 50 (q/frame-count))) (q/height)))
+     (+ (int (/ (* 20 (get-in recorded-list [:this :x] 0)) (q/width))) horizontal-shift)
+     (+ (int (/ (* 20 (get-in recorded-list [:this :y] 0)) (q/height))) (mod (+ 30 (* 50 (q/frame-count))) (q/height)))
      3 3)
     (render-list (recorded-list :rest) (+ horizontal-shift 30))
     ))
