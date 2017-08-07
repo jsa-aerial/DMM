@@ -26,8 +26,9 @@ While we are eventually aiming towards that other, high end of the spectrum,
 here are some modest intermediate steps we can take now.
 
 Being inspired by our Jul 6 and Jul 13 experiments, we
-can start introduce modest mechanisms allowing to create
-and edit V-values including the network matrices themselves.
+can start to introduce modest mechanisms allowing to create
+and edit V-values including the network matrices themselves,
+by the network itself via update neurons.
 
 The main ingredients are: V-values to be edited, paths in
 V-values (basis vectors of the space V), numerical sliders,
