@@ -77,10 +77,11 @@ kind of architecture).
 
 ### Streams of V-values and dataflow matrix machines.
 
-Dataflow matrix machines (DMMs) interleave linear and non-linear computations
-with streams of V-values. This makes DMMs generalized neural networks
-and allows to continuously transform any program written as a DMM into
-any other program written as a DMM.
+Dataflow matrix machines (DMMs) interleave non-linear and linear computations
+(the computations in this case are computationa with streams of V-values. 
+This makes DMMs generalized neural networks and allows to continuously transform
+any program written as a DMM into any other program written as a DMM by
+continuously changing the linear part.
 
 However, if these strong properties are not required, one does not have to
 interleave linear and non-linear computations. Instead, one can just program
