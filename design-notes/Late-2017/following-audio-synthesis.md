@@ -45,6 +45,29 @@ However, streams of numbers are not sufficiently expressive for that. In general
 would like to have streams of sufficiently expressive data structures here, and
 V-values fit this role well.
 
-[to be continued]
+### Visual synthesis.
+
+For example, if one has an animation with moving ellipses changing color as in 
+
+https://github.com/anhinga/fluid/tree/master/quil-auxiliary/quil-try
+
+one does not want to program in terms of streams of rectangular matrixes
+of pixels representing those ellipses over transparent background, at least
+not at the initial stages of the processing pipeline, but one wants instead to
+program in terms of streams of compact data structures containing the
+attributes defining the colored ellipse at a given moment of time.
+
+Similarly, if one looks at the question of more effective implementation of
+
+https://github.com/anhinga/fluid/blob/master/may_9_15_experiment/custom_wave_transform.pde
+
+one would probably like to think in terms of streams of
+mappings of `(i-center_x)^2+(j-center_y)^2` integers to their assocated 
+`mod` values as an important intermediate stream of V-values.
+
+### Data structures.
+
+
+### V-values and dataflow matrix machines.
 
 [to be continued]
