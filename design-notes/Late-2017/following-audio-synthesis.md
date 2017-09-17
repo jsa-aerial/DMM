@@ -62,10 +62,17 @@ Similarly, if one looks at the question of more effective implementation of
 https://github.com/anhinga/fluid/blob/master/may_9_15_experiment/custom_wave_transform.pde
 
 one would probably like to think in terms of streams of
-mappings of `(i-center_x)^2+(j-center_y)^2` integers to their assocated 
+mappings of `(i - center_x)^2 + (j - center_y)^2` integers to their assocated 
 `mod` values as an important intermediate stream of V-values.
 
 ### Data structures.
+
+Our recent experiments such as July 13 experiment suggest that streams of
+V-values might be sufficient to express algorithms processing conventional
+data structures (at least, if one agrees to process those data structures in immutable, but
+non-lazy fashion, which seems to be a particularly natural fit for this
+kind of architecture).
+
 
 
 ### V-values and dataflow matrix machines.
