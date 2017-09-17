@@ -1,6 +1,6 @@
 # From audio synthesis with unit generators to synthesis of animations and other forms of programming via streams of V-values.
 
-Audio synthesis via **unit generators** was invented by Max Matthews 60 years ago:
+Audio synthesis via **unit generators** was invented by Max Mathews 60 years ago:
 
 https://en.wikipedia.org/wiki/MUSIC-N
 
@@ -17,7 +17,7 @@ to drive those numbers/coefficients by other unit generators, effectively making
 **higher-order**. The typical neurons are more powerful than neurons in conventional neural nets, often
 with multiple input slots. 
 
-In fact, looking at our https://arxiv.org/abs/1601.01050 one see a lot of similarities
+In fact, looking at our https://arxiv.org/abs/1601.01050 one sees a lot of similarities
 between the previous paragraph and that preprint.
 
 
