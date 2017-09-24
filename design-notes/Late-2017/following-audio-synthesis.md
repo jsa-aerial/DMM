@@ -96,3 +96,17 @@ Therefore, maintaining the DMM discipline of interleaving non-linear and linear
 transformations is an orthogonal concern to the discipline of synthesis via
 unit generators based on streams of V-values. If one does interleave, one has more
 flexibility and the design is much more open-ended.
+
+### The case of analog video synthesizers, oscilloscopes, etc.
+
+Physical devices known as analog video synthesizers (starting from oscilloscopes) 
+are probably closer to unit generator style of video synthesis, based on scalar flows
+(just like the audio synthesis):
+
+https://en.wikipedia.org/wiki/Video_synthesizer
+
+https://en.wikipedia.org/wiki/Oscilloscope
+
+What we would like to do is to extend this style with using the flows of vectors,
+matrices, and arbitrary V-values (which is rather difficult to do efficiently in
+analog hardware).
