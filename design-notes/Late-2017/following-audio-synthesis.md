@@ -31,7 +31,9 @@ However, we are seeing fruitful instances of
 more traditional unit generators being injected into neural networks, see e.g.
 
 https://arxiv.org/abs/1610.09513 , "Phased LSTM: Accelerating Recurrent Network Training
-for Long or Event-based Sequences" by Neil et al.
+for Long or Event-based Sequences" by Neil et al. In that paper, periodic sequences of
+sparsely placed shapes known in audio synthesis as "Attack-Decay Envelopes" are injected
+into particular locations of the network; the parameters of those sequences are trainable.
 
 ## Visual synthesis and other kinds of programming via streams of V-values.
 
