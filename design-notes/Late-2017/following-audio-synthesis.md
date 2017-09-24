@@ -107,6 +107,6 @@ https://en.wikipedia.org/wiki/Video_synthesizer
 
 https://en.wikipedia.org/wiki/Oscilloscope
 
-What we would like to do is to extend this style with using the flows of vectors,
+What we would like to do is to extend this style using the flows of vectors,
 matrices, and arbitrary V-values (which is rather difficult to do efficiently in
 analog hardware).
