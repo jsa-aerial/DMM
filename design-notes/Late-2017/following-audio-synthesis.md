@@ -4,6 +4,10 @@ Audio synthesis via **unit generators** was invented by Max Mathews 60 years ago
 
 https://en.wikipedia.org/wiki/MUSIC-N
 
+See also: M. V. Mathews, "The Digital Computer as a Musical Instrument", Science **142** (1963) 553-557: 
+
+http://www.jaimeoliver.pe/courses/ci/pdf/mathews-1963.pdf
+
 This is a discipline of compositional functional programming
 with streams of samples (streams of numbers in case of mono).
 An introduction I particularly like is "Sonifying Processing:
