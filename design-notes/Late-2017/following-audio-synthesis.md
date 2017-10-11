@@ -24,6 +24,9 @@ with multiple input slots.
 In fact, looking at our https://arxiv.org/abs/1601.01050 one sees a lot of similarities
 between the previous paragraph and that preprint.
 
+One can say that **audio synthesis via unit generators is one of the early neural network architectures**,
+only it has not been commmonly recognized as such, because **those neural networks have typically been
+hardcrafted, rather than automatically trained**.
 
 ## Explicit unit generators in neural networks.
 
