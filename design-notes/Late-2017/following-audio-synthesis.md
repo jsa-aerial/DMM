@@ -26,7 +26,7 @@ between the previous paragraph and that preprint.
 
 One can say that **audio synthesis via unit generators is one of the early neural network architectures**,
 only it has not been commonly recognized as such, because **those neural networks have typically been
-hardcrafted, rather than automatically trained**.
+handcrafted, rather than automatically trained**.
 
 ## Explicit unit generators in neural networks.
 
