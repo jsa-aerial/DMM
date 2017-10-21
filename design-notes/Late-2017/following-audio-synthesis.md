@@ -1,6 +1,6 @@
 # From audio synthesis with unit generators to synthesis of animations and other forms of programming via streams of V-values.
 
-Audio synthesis via **unit generators** was invented by Max Mathews 60 years ago:
+Audio synthesis via **unit generators** was invented by Max Mathews 60 years ago at Bell Labs:
 
 https://en.wikipedia.org/wiki/MUSIC-N
 
