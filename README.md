@@ -9,3 +9,6 @@ A LearnAut 2017 paper:
 
 https://arxiv.org/abs/1706.00648
 
+A "K + K = 120" Festschrift paper:
+
+https://arxiv.org/abs/1712.07447
