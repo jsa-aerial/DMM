@@ -2,7 +2,7 @@
 
 This is a small DMM which should accumulate the list of mouse clicks and render them in an associated graphics window.
 
-It is mostly meant to illustrate that if one uses a neural network based on flows of vectors (in this case, flows of V-values which are vectors based on nested dictionaries) instead of flows of numbers, then it is easy to implement usual programming operations such as consing the list, which are pretty difficult to implement within the conventional neural nets.
+It is mostly meant to illustrate that if one uses a neural network based on flows of vectors (in this case, flows of V-values which are vectors based on nested dictionaries) along the wires connecting the neurons instead of flows of numbers, then it is easy to implement usual programming operations such as consing an element to a list, which are pretty difficult to implement within the conventional neural nets.
 
 The network itself is defined in lines 38-78 of the `jul_13_2017_experiment.clj` file. It consists of 3 neurons:
 
