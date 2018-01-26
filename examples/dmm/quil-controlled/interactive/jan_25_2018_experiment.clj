@@ -27,6 +27,9 @@
 (v-path [:a :b :c] (v-path [:d :e] 0.9))
 ;; {:a {:b {:c {:d {:e 0.9}}}}}
 
+(v-path-fn [:a :b :c] (v-path-fn [:d :e] 0.9))
+;; {:a {:b {:c {:d {:e 0.9}}}}}
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def mouse-pressed-channel (async/chan))
@@ -82,15 +85,15 @@
 
              :mouse-pressed-monitor-hook
              (v-path [v-mouse-pressed-monitor :mouse-pressed-monitor :single]
-                     (v-path [v-mouse-pressed-monitor :mouse-pressed-monitor :signal]))
+                     (v-path [v-mouse-pressed-monitor :mouse-pressed-monitor :single]))
 
              :network-interactive-updater-hook
-             (v-path [v-network-update-monitor :network-interactive-updater :single]
-                     (v-path [v-network-update-monitor :network-interactive-updater :single]))
+             (v-path [v-network-update-monitor :network-interactive-updater :signal]
+                     (v-path [v-network-update-monitor :network-interactive-updater :signal]))
 
              :network-update-connection
              (v-path [v-accum :self :delta]
-                     (v-path [v-network-update-monitor :network-interactive-updater :single]))
+                     (v-path [v-network-update-monitor :network-interactive-updater :signal]))
              
              :dmm-cons-accum-connection
              (v-path [v-dmm-cons :my-list :self]
@@ -208,6 +211,11 @@
 ;; shown outside the "mini-window" representing the mouse click in question
 (defn mp [x y]
   (async/go (async/>! mouse-pressed-channel {:x x :y y})))
+
+;; send "nu [input-path] [output-path] weight" from the quil window
+;; to update the network
+(defn nu [x y value]
+  (async/go (async/>! network-update-channel (v-path-fn x (v-path-fn y value)))))
 
 (def unscreened-name-space *ns*) ;;;;; evil hack, because Quil event handler
                                  ;;;;; uses clojure.core for some reason
