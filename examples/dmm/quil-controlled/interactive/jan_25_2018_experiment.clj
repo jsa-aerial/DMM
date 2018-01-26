@@ -110,6 +110,7 @@
               ;; (m :mouse-tracking-neuron-hook)
               (m :mouse-pressed-monitor-hook)
               (m :network-interactive-updater-hook)
+              (m :network-update-connection)
               (m :dmm-cons-accum-connection)
               (m :dmm-cons-signal-connection)))))
 
@@ -198,7 +199,7 @@
   (q/fill 0 0 127)
   
   (q/text (str "current text input: " (:current-text-input state))
-          800 (mod (+ 75 (* 75 (q/frame-count))) (q/height))))
+          400 (mod (+ 75 (* 75 (q/frame-count))) (q/height))))
           
 (defn mouse-pressed [state event]
   (async/go (async/>! mouse-pressed-channel event))
@@ -240,7 +241,7 @@
 
 (q/defsketch quil-try
   :title "A Quil-controlled DMM"
-  :size [1600 800]
+  :size [2000 800]
   ; setup function called only once, during sketch initialization.
   :setup setup
   ; update-state is called on each iteration before draw-state.
