@@ -17,7 +17,6 @@
      y
      {(first x) (v-path-fn (rest x) y)})))
 
-
 (defmacro v-path
   ([x] (v-path-fn x 1))
   ([x y] (v-path-fn x y)))
@@ -25,9 +24,14 @@
 (v-path [:a :b :c] (v-path [:d :e]))
 ;; {:a {:b {:c {:d {:e 1}}}}}
 
+(v-path [:a :b :c] (v-path [:d :e] 0.9))
+;; {:a {:b {:c {:d {:e 0.9}}}}}
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def mouse-pressed-channel (async/chan))
+
+(def network-update-channel (async/chan))
 
 (defn mouse-pressed-monitor [dummy]
   (let [signal ((async/alts!! [mouse-pressed-channel] :default {}) 0)]
@@ -37,7 +41,13 @@
        {:x (signal :x) :y (signal :y) :flag 1})}))
   ; might want to add a transformation of :button field too
 
+(defn network-update-monitor [dummy]
+  (let [signal ((async/alts!! [network-update-channel] :default {}) 0)]
+    {:signal signal}))
+
 (def v-mouse-pressed-monitor (var mouse-pressed-monitor))
+
+(def v-network-update-monitor (var network-update-monitor))
 
 (defn dmm-cons [accum-style-input]
   (let [old-self (accum-style-input :self)]
@@ -72,8 +82,16 @@
 
              :mouse-pressed-monitor-hook
              (v-path [v-mouse-pressed-monitor :mouse-pressed-monitor :single]
-                     (v-path [v-mouse-pressed-monitor :mouse-pressed-monitor :single]))
+                     (v-path [v-mouse-pressed-monitor :mouse-pressed-monitor :signal]))
 
+             :network-interactive-updater-hook
+             (v-path [v-network-update-monitor :network-interactive-updater :single]
+                     (v-path [v-network-update-monitor :network-interactive-updater :single]))
+
+             :network-update-connection
+             (v-path [v-accum :self :delta]
+                     (v-path [v-network-update-monitor :network-interactive-updater :single]))
+             
              :dmm-cons-accum-connection
              (v-path [v-dmm-cons :my-list :self]
                      (v-path [v-dmm-cons :my-list :self]))
@@ -88,6 +106,7 @@
               (m :init-matrix)
               ;; (m :mouse-tracking-neuron-hook)
               (m :mouse-pressed-monitor-hook)
+              (m :network-interactive-updater-hook)
               (m :dmm-cons-accum-connection)
               (m :dmm-cons-signal-connection)))))
 
@@ -199,7 +218,7 @@
         next-text-input (:current-text-input state)]
     (if (= next-key \newline)
           (let [new-response
-                   (try (binding [*ns* unscreened-name-space]
+                   (try (binding [*ns* unscreened-name-space] ;;;;; using that evil hack
                                  (eval (read-string next-text-input)))
                         "ok"
                      (catch Exception e "failed"))]
