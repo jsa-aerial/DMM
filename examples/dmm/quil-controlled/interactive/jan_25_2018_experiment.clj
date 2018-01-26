@@ -46,9 +46,9 @@
              :init-matrix
              {v-accum {:self {:accum {v-accum {:self {:single 1}}}}}}
 
-             :mouse-tracking-neuron-hook
-             {v-mouse-coords
-              {:mouse-position {:single {v-mouse-coords {:mouse-y 1}}}}}
+             ;; :mouse-tracking-neuron-hook
+             ;; {v-mouse-coords
+             ;;  {:mouse-position {:single {v-mouse-coords {:mouse-y 1}}}}}
 
              :mouse-pressed-monitor-hook
              {v-mouse-pressed-monitor {:mouse-pressed-monitor {:single
@@ -65,7 +65,7 @@
       (assoc m :start-matrix
              (rec-map-sum
               (m :init-matrix)
-              (m :mouse-tracking-neuron-hook)
+              ;; (m :mouse-tracking-neuron-hook)
               (m :mouse-pressed-monitor-hook)
               (m :dmm-cons-accum-connection)
               (m :dmm-cons-signal-connection)))))
@@ -187,7 +187,7 @@
                 (if (= next-key \backspace)
                   (join "" (drop-last next-text-input))
                   (str next-text-input next-key))]
-            (assoc state :current-text-input plus-minus-one-char)))))
+            (assoc state :last-response "entering" :current-text-input plus-minus-one-char)))))
                        
 
 (q/defsketch quil-try
