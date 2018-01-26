@@ -9,5 +9,5 @@ so this does not edit the network yet, but just exercises the interaction pipeli
 Jan 25, 2018 - this version can actually do network updates on the fly, demonstrating
 this capability. Tested lightly, by checking that typing
 `(nu [v-dmm-cons :my-list :self] [v-dmm-cons :my-list :self] -0.1)` actually does what's
-expected. Other that that, this implementation introduces `v-path` macro (to be moved
+expected. Other than that, this implementation introduces `v-path` macro (to be moved
 to `core` eventually) and the backspace capability.
