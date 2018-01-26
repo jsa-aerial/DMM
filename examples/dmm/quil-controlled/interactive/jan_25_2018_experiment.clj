@@ -8,6 +8,25 @@
             [clojure.core.async :as async]
             [clojure.string :as string :refer [join]]))
 
+;;;;;;;;;;  the v-path macro might need to move to the core
+
+(defn v-path-fn
+  ([x] (v-path-fn x 1))
+  ([x y]
+   (if (empty? x)
+     y
+     {(first x) (v-path-fn (rest x) y)})))
+
+
+(defmacro v-path
+  ([x] (v-path-fn x 1))
+  ([x y] (v-path-fn x y)))
+
+(v-path [:a :b :c] (v-path [:d :e]))
+;; {:a {:b {:c {:d {:e 1}}}}}
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (def mouse-pressed-channel (async/chan))
 
 (defn mouse-pressed-monitor [dummy]
@@ -44,22 +63,24 @@
       (assoc m
 
              :init-matrix
-             {v-accum {:self {:accum {v-accum {:self {:single 1}}}}}}
+             (v-path [v-accum :self :accum]
+                     (v-path [v-accum :self :single]))
 
              ;; :mouse-tracking-neuron-hook
              ;; {v-mouse-coords
              ;;  {:mouse-position {:single {v-mouse-coords {:mouse-y 1}}}}}
 
              :mouse-pressed-monitor-hook
-             {v-mouse-pressed-monitor {:mouse-pressed-monitor {:single
-              {v-mouse-pressed-monitor {:mouse-pressed-monitor {:single 1}}}}}}
+             (v-path [v-mouse-pressed-monitor :mouse-pressed-monitor :single]
+                     (v-path [v-mouse-pressed-monitor :mouse-pressed-monitor :single]))
 
              :dmm-cons-accum-connection
-             {v-dmm-cons {:my-list {:self {v-dmm-cons {:my-list {:self 1}}}}}}
+             (v-path [v-dmm-cons :my-list :self]
+                     (v-path [v-dmm-cons :my-list :self]))
 
              :dmm-cons-signal-connection
-             {v-dmm-cons {:my-list {:signal
-              {v-mouse-pressed-monitor {:mouse-pressed-monitor {:signal 1}}}}}})))
+             (v-path [v-dmm-cons :my-list :signal]
+                     (v-path [v-mouse-pressed-monitor :mouse-pressed-monitor :signal])))))
 
    ((fn[m]
       (assoc m :start-matrix
