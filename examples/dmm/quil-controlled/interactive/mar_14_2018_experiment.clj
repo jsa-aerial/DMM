@@ -1,4 +1,4 @@
-(ns dmm.examples.quil-controlled.interactive.jan-25-2018-experiment
+(ns dmm.examples.quil-controlled.interactive.mar-14-2018-experiment
   (:require [quil.core :as q]
             [quil.middleware :as m]
             [dmm.core :as dc
@@ -135,14 +135,15 @@
    :last-response "none"
    :current-text-input ""})
 
-(defn update-state [state]
+(defn update-state [quil-state]
   ;; Update sketch state by performing one cycle of the "two-stroke engine"
   ;; of the generalized neural network.
-  (let [current-input (down-movement (:output-layer state))]
+  (let [current-input (down-movement (:output-layer quil-state))
+        current-output (up-movement current-input)]
     {:input-layer current-input
-     :output-layer (up-movement current-input)
-     :last-response (:last-response state)
-     :current-text-input (:current-text-input state)
+     :output-layer current-output
+     :last-response (:last-response quil-state)
+     :current-text-input (:current-text-input quil-state)
      }))
 
 
@@ -177,7 +178,7 @@
     ))
 
 
-(defn draw-state [state]
+(defn draw-state [quil-state]
   ;; Clear the sketch by filling it with grey color.
   ;;(q/background 127)
 
@@ -188,24 +189,24 @@
 
   (q/text-size 24)
 
-  (render-list (extract-list (state :output-layer)) 50)
+  (render-list (extract-list (quil-state :output-layer)) 50)
 
-  (let [sub-delta-row-1 (->> state :output-layer extract-mouse-pressed-monitor)
-        sub-delta-row-2 (->> state :output-layer extract-mouse-position)]
+  (let [sub-delta-row-1 (->> quil-state :output-layer extract-mouse-pressed-monitor)
+        sub-delta-row-2 (->> quil-state :output-layer extract-mouse-position)]
     (q/text (str (q/frame-count) " " sub-delta-row-1 " " sub-delta-row-2)
             50 (mod (+ 25 (* 75 (q/frame-count))) (q/height))))
 
-  (q/text (str "last response: " (:last-response state))
+  (q/text (str "last response: " (:last-response quil-state))
           50 (mod (+ 75 (* 75 (q/frame-count))) (q/height)))
 
   (q/fill 0 0 127)
   
-  (q/text (str "current text input: " (:current-text-input state))
+  (q/text (str "current text input: " (:current-text-input quil-state))
           400 (mod (+ 75 (* 75 (q/frame-count))) (q/height))))
           
-(defn mouse-pressed [state event]
+(defn mouse-pressed [quil-state event]
   (async/go (async/>! mouse-pressed-channel event))
-  state)
+  quil-state)
 
 ;; imitation of mouse pressed event for (eval (read-string current-text-input))
 ;; type something like (mp 120 50) in the graphics window to imitate a click
@@ -251,21 +252,21 @@
                                  ;;;;; uses clojure.core for some reason
                                  ;;;;; quil-specific problem
 
-(defn key-typed [state event]
+(defn key-typed [quil-state event]
   (let [next-key (:raw-key event)
-        next-text-input (:current-text-input state)]
+        next-text-input (:current-text-input quil-state)]
     (if (= next-key \newline)
           (let [new-response
                    (try (binding [*ns* unscreened-name-space] ;;;;; using that evil hack
                                  (eval (read-string next-text-input)))
                         "ok"
                      (catch Exception e "failed"))]
-            (assoc state :last-response new-response :current-text-input ""))
+            (assoc quil-state :last-response new-response :current-text-input ""))
           (let [plus-minus-one-char
                 (if (= next-key \backspace)
                   (join "" (drop-last next-text-input))
                   (str next-text-input next-key))]
-            (assoc state :last-response "entering" :current-text-input plus-minus-one-char)))))
+            (assoc quil-state :last-response "entering" :current-text-input plus-minus-one-char)))))
                        
 
 (q/defsketch quil-try
