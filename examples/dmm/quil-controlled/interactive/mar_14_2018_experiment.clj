@@ -123,6 +123,7 @@
 
 (def state (atom (init-state)))
 
+(def history (atom {})) ;; if we want to keep in-memory log
 
 
 (defn setup []
@@ -132,6 +133,7 @@
   ;; setup function returns initial state. It contains
   ;; the initial output layer of the generalized neural network.
   {:output-layer (@state :init-output)
+   :timer 0
    :last-response "none"
    :current-text-input ""})
 
@@ -139,9 +141,12 @@
   ;; Update sketch state by performing one cycle of the "two-stroke engine"
   ;; of the generalized neural network.
   (let [current-input (down-movement (:output-layer quil-state))
-        current-output (up-movement current-input)]
+        current-output (up-movement current-input)
+        timer (inc (:timer quil-state))]
+    (swap! history (fn [h] (assoc h timer {:input current-input, :output current-output})))
     {:input-layer current-input
      :output-layer current-output
+     :timer timer
      :last-response (:last-response quil-state)
      :current-text-input (:current-text-input quil-state)
      }))
