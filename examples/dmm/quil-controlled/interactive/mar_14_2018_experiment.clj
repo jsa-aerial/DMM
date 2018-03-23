@@ -127,10 +127,14 @@
 
 (def stroke-color (atom [0]))
 
-(defn set-stroke-color! [c] (swap! stroke-color (fn[n] c)))
+(defn set-stroke-color! [& c] (swap! stroke-color (fn[n] c)))
 
 (defn set-stroke [] (apply q/stroke @stroke-color)) ;; the only reason we don't name it set-stroke!
                                                     ;; is that q/stroke does not have ! in its name
+
+(def fading (atom 0))
+
+(defn set-fading! [f-factor] (swap! fading (fn[n] f-factor)))
 
 (defn setup []
   ;; Set frame rate to 1 frame per second, so that one has time to
@@ -192,6 +196,9 @@
     ))
 
 (defn draw-state [quil-state]
+
+  (q/with-fill [127 @fading]
+    (q/rect 0 0 (q/width) (q/height)))
 
   ;;(q/stroke @stroke-color)
   (set-stroke)
@@ -310,7 +317,7 @@
   :draw draw-state
   :mouse-pressed mouse-pressed
   :key-typed key-typed
-  :features [:keep-on-top]
+  ;; :features [:keep-on-top]
   ; This sketch uses functional-mode middleware.
   ; Check quil wiki for more info about middlewares and particularly
   ; fun-mode.
