@@ -129,7 +129,9 @@
 (defn setup []
   ;; Set frame rate to 1 frame per second, so that one has time to
   ;; ponder things.
-  (q/frame-rate 1)
+  (q/frame-rate 30)
+  (q/background 127)
+  ;;(q/stroke-weight 2)
   ;; setup function returns initial state. It contains
   ;; the initial output layer of the generalized neural network.
   {:output-layer (@state :init-output)
@@ -182,8 +184,15 @@
     (render-list (recorded-list :rest) (+ horizontal-shift 30))
     ))
 
-
 (defn draw-state [quil-state]
+
+  (let [combined-mouse (->> quil-state :output-layer extract-mouse-position)
+        current-mouse (combined-mouse :current)
+        previous-mouse (combined-mouse :previous)]
+    (q/line (current-mouse :mouse-x) (current-mouse :mouse-y)
+            (previous-mouse :mouse-x) (previous-mouse :mouse-y))))
+
+#_(defn draw-state [quil-state]
   ;; Clear the sketch by filling it with grey color.
   ;;(q/background 127)
 
@@ -276,7 +285,7 @@
 
 (q/defsketch quil-try
   :title "A Quil-controlled DMM"
-  :size [2000 800]
+  :size [1200 800]
   ; setup function called only once, during sketch initialization.
   :setup setup
   ; update-state is called on each iteration before draw-state.
