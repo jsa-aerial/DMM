@@ -125,13 +125,17 @@
 
 (def history (atom {})) ;; if we want to keep in-memory log
 
+(def stroke-color (atom 0))
+
+(defn set-stroke-color [c] (swap! stroke-color (fn[n] c)))
 
 (defn setup []
   ;; Set frame rate to 1 frame per second, so that one has time to
   ;; ponder things.
   (q/frame-rate 30)
   (q/background 127)
-  ;;(q/stroke-weight 2)
+  (q/text-size 24)
+  (q/fill 0)
   ;; setup function returns initial state. It contains
   ;; the initial output layer of the generalized neural network.
   {:output-layer (@state :init-output)
@@ -186,11 +190,20 @@
 
 (defn draw-state [quil-state]
 
+  (q/stroke @stroke-color)
   (let [combined-mouse (->> quil-state :output-layer extract-mouse-position)
         current-mouse (combined-mouse :current)
         previous-mouse (combined-mouse :previous)]
     (q/line (current-mouse :mouse-x) (current-mouse :mouse-y)
-            (previous-mouse :mouse-x) (previous-mouse :mouse-y))))
+            (previous-mouse :mouse-x) (previous-mouse :mouse-y)))
+
+  (q/no-stroke)
+  (q/with-fill [127]
+    (q/rect 10 10 500 25)
+    (q/rect 10 40 500 25))
+
+  (q/text (str "input: " (:current-text-input quil-state)) 10 30)
+  (q/text (str "status: " (:last-response quil-state)) 10 60))
 
 #_(defn draw-state [quil-state]
   ;; Clear the sketch by filling it with grey color.
