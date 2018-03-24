@@ -35,6 +35,9 @@
 (defn string-tail [s n]
   (subs s (max 0 (- (count s) n))))
 
+(defn timestamp []
+  (str (java.util.Date.)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def mouse-pressed-channel (async/chan))
@@ -141,6 +144,12 @@
 
 (defn set-fading! [f-factor] (swap! fading (fn[n] f-factor)))
 
+(def activity-log (atom "activity-log.txt"))
+
+(defn log-activity [s]
+  (with-open [wrt (clojure.java.io/writer @activity-log :append true)]
+    (.write wrt s)))
+
 (defn setup []
   ;; Set frame rate to 1 frame per second, so that one has time to
   ;; ponder things.
@@ -148,6 +157,7 @@
   (q/background 127)
   (q/text-size 24)
   (q/fill 0)
+  (log-activity (str "NEW RUN: " (timestamp) "\n"))
   ;; setup function returns initial state. It contains
   ;; the initial output layer of the generalized neural network.
   {:output-layer (@state :init-output)
@@ -304,6 +314,9 @@
                                  (eval (read-string next-text-input)))
                         "ok"
                      (catch Exception e "failed"))]
+            (log-activity (str (timestamp) "\n"
+                               "input: " next-text-input "\n"
+                               "response: " new-response "\n"))
             (assoc quil-state :last-response new-response :current-text-input ""))
           (let [plus-minus-one-char
                 (if (= next-key \backspace)
