@@ -30,6 +30,11 @@
 (v-path-fn [:a :b :c] (v-path-fn [:d :e] 0.9))
 ;; {:a {:b {:c {:d {:e 0.9}}}}}
 
+;;;;;;
+
+(defn string-tail [s n]
+  (subs s (max 0 (- (count s) n))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def mouse-pressed-channel (async/chan))
@@ -210,10 +215,10 @@
 
   (q/no-stroke)
   (q/with-fill [127]
-    (q/rect 10 10 500 25)
-    (q/rect 10 40 500 25))
+    (q/rect 10 10 1000 25)
+    (q/rect 10 40 1000 25))
 
-  (q/text (str "input: " (:current-text-input quil-state)) 10 30)
+  (q/text (str "input: " (string-tail (:current-text-input quil-state) 60)) 10 30)
   (q/text (str "status: " (:last-response quil-state)) 10 60))
 
 #_(defn draw-state [quil-state]
