@@ -14,6 +14,9 @@ to enable livecoding is supported already.
 Here is some of what we tested:
 
 `(q/stroke-weight 5)
+
 (set-stroke-color! 0 0 200)
+
 (set-fading! 5)
+
 (nu [v-mouse-coords :mouse-position :previous] [v-mouse-coords :mouse-position :current] -0.1)`
