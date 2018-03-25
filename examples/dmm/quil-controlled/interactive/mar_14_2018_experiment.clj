@@ -195,7 +195,7 @@
    (((current-output v-dmm-cons) :my-list) :self))
 
 (defn extract-mouse-pressed-monitor [current-output]
-  (current-output v-mouse-pressed-monitor))
+  (get current-output v-mouse-pressed-monitor {}))
 
 (defn render-list [recorded-list horizontal-shift]
   ;;(q/text (str recorded-list) 25 25)
@@ -218,10 +218,10 @@
   ;;(q/stroke @stroke-color)
   (set-stroke)
   (let [combined-mouse (->> quil-state :output-layer extract-mouse-position)
-        current-mouse (combined-mouse :current)
-        previous-mouse (combined-mouse :previous)]
-    (q/line (current-mouse :mouse-x) (current-mouse :mouse-y)
-            (previous-mouse :mouse-x) (previous-mouse :mouse-y)))
+        current-mouse (get combined-mouse :current {})
+        previous-mouse (get combined-mouse :previous {})]
+    (q/line (get current-mouse :mouse-x 0) (get current-mouse :mouse-y 0)
+            (get previous-mouse :mouse-x 0) (get previous-mouse :mouse-y 0)))
 
   (q/no-stroke)
   (q/with-fill [127]
