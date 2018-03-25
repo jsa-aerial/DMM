@@ -316,8 +316,8 @@
                      (catch Exception e "failed"))]
             (log-activity (str (timestamp) "\n"
                                "network timer: " (:timer quil-state) "\n"
-                               "free memory:   " (.freeMemory (.. Runtime getRuntime)) "\n"
-                               "total memory:  " (.totalMemory (.. Runtime getRuntime)) "\n"
+                               "free memory:   " (.freeMemory (. Runtime getRuntime)) "\n"
+                               "total memory:  " (.totalMemory (. Runtime getRuntime)) "\n"
                                "input:         " next-text-input "\n"
                                "response:      " new-response "\n"))
             (assoc quil-state :last-response new-response :current-text-input ""))
