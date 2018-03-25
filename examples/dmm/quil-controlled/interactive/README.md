@@ -11,3 +11,7 @@ this capability. Tested lightly, by checking that typing
 `(nu [v-dmm-cons :my-list :self] [v-dmm-cons :my-list :self] -0.1)` actually does what's
 expected. Other than that, this implementation introduces `v-path` macro (to be moved
 to `core` eventually) and the backspace capability.
+
+May 14, 2018 - in progress towards practical livecoding experiments 
+(see [comment_to_mar_14_2018_experiment.md](comment_to_mar_14_2018_experiment.md)
+for the current state of things).
