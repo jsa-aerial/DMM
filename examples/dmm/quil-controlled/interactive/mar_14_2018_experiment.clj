@@ -151,10 +151,32 @@
   (with-open [wrt (clojure.java.io/writer @activity-log :append true)]
     (.write wrt s)))
 
+;;;;; seesaw-specific wrappers (for some reason, we see quil.core and
+;;;;; even "quil.core as q" from Quil key pressed handlers, but not
+;;;;; from Seesaw event handlers)
+
+;;;;; even this does not work (presumably, one would need to pick
+;;;;; a value of a stroke and set it manually downstream
+
+;;;;; but the commands not referring to other namespaces directly
+;;;;; work + microeditor inside Quil works, so committing this
+;;;;; version for the time being
+
+(defn stroke-weight [n]
+   (q/stroke-weight n))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (def seesaw-window (atom {}))
 
+(def unscreened-name-space *ns*) ;;;;; evil hack, because Quil event handler
+                                 ;;;;; uses clojure.core for some reason
+                                 ;;;;; quil-specific problem; unfortunarely
+                                 ;;;;; we have to do the same
+                                 ;;;;; with seesaw handler
+
 (defn seesaw-setup []
-  (seesaw/native!) ;;; that's only if you want to customize swing to your OS
+  ;;; (seesaw/native!) ;;; that's only if you want to customize swing to your OS
   (let [dialog-window (seesaw/frame :title "Edit running DMM")
         input-area (seesaw/text :multi-line? true 
                                 :text 
@@ -170,12 +192,29 @@
        ]
     (seesaw/config! dialog-window :content split-vert)
     (-> dialog-window seesaw/pack! seesaw/show!)
+    ;;; (seesaw/text! status-text "DEBUG 1")
     (swap! seesaw-window
            (fn[n] 
             {:dialog-window dialog-window
              :input-area input-area
              :send-button send-button
-             :status-text status-text}))))
+             :status-text status-text}))
+    ;;; (seesaw/text! status-text "DEBUG 2")
+    ;;; (seesaw/text! (@seesaw-window :status-text) "DEBUG 3")
+    (seesaw/listen (@seesaw-window :send-button) 
+            :action (fn [e] 
+                       (let [next-command (seesaw/text (@seesaw-window :input-area))
+                             new-response (try (binding [*ns* unscreened-name-space] (eval (read-string next-command)))
+                                             "ok"
+                                             (catch Exception e "failed"))]
+                          (seesaw/text! (@seesaw-window :status-text) new-response)
+                          (log-activity (str (timestamp) "\n"
+                                             ;;; "network timer: " (:timer quil-state) "\n"
+                                             ;;; "free memory:   " (.freeMemory (. Runtime getRuntime)) "\n"
+                                             ;;; "total memory:  " (.totalMemory (. Runtime getRuntime)) "\n"
+                                             "seesaw input:         " next-command "\n"
+                                             "seesaw response:      " new-response "\n")))))
+    (seesaw/text! (@seesaw-window :status-text) "DEBUG 4")))
 
 (defn setup []
   (q/frame-rate 30)
@@ -323,13 +362,6 @@
 (defn smul [field value]
   (swap! state (fn [s] (assoc s field (rec-map-mult value (s field)))))
   nil)
-
-
-
-
-(def unscreened-name-space *ns*) ;;;;; evil hack, because Quil event handler
-                                 ;;;;; uses clojure.core for some reason
-                                 ;;;;; quil-specific problem
 
 (defn key-typed [quil-state event]
   (let [next-key (:raw-key event)
