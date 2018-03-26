@@ -177,7 +177,9 @@
                                 :font (seesaw.font/font :name :monospaced :size 28))
         send-button (seesaw/button :text "Send")
         status-text (seesaw/text "")
-        split-line (seesaw/left-right-split send-button status-text :divider-location 1/5)
+        timer-text (seesaw/text "")
+        two-texts (seesaw/left-right-split status-text timer-text :divider-location 1/2)
+        split-line (seesaw/left-right-split send-button two-texts :divider-location 1/5)
         split-vert (seesaw/top-bottom-split split-line (seesaw/scrollable input-area) :divider-location 1/8) 
        ]
     (seesaw/config! dialog-window :content split-vert)
@@ -188,7 +190,8 @@
             {:dialog-window dialog-window
              :input-area input-area
              :send-button send-button
-             :status-text status-text}))
+             :status-text status-text
+             :timer-text timer-text}))
     ;;; (seesaw/text! status-text "DEBUG 2")
     ;;; (seesaw/text! (@seesaw-window :status-text) "DEBUG 3")
     (seesaw/listen (@seesaw-window :send-button) 
@@ -199,7 +202,7 @@
                                              (catch Exception e "failed"))]
                           (seesaw/text! (@seesaw-window :status-text) new-response)
                           (log-activity (str (timestamp) "\n"
-                                             ;;; "network timer: " (:timer quil-state) "\n"
+                                             "network timer: " (seesaw/text (@seesaw-window :timer-text)) "\n"
                                              ;;; "free memory:   " (.freeMemory (. Runtime getRuntime)) "\n"
                                              ;;; "total memory:  " (.totalMemory (. Runtime getRuntime)) "\n"
                                              "seesaw input:         " next-command "\n"
@@ -266,6 +269,8 @@
     ))
 
 (defn draw-state [quil-state]
+
+  (seesaw/text! (@seesaw-window :timer-text) (str (quil-state :timer)))
 
   (q/with-fill [127 @fading]
     (q/rect 0 0 (q/width) (q/height)))
