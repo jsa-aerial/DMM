@@ -20,8 +20,9 @@
                  [aerial.utils              "1.0.8"]
 
                  [expectations "2.1.8"]
+                 [seesaw "1.4.5"]
                  [net.apribase/clj-dns      "0.1.0"]] ; reverse-dns-lookup
-
+                 
 
   :plugins [[cider/cider-nrepl "0.16.0"]
             [refactor-nrepl    "2.2.0"]

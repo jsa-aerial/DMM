@@ -1,6 +1,7 @@
 (ns dmm.examples.quil-controlled.interactive.mar-14-2018-experiment
   (:require [quil.core :as q]
             [quil.middleware :as m]
+            [seesaw.core :as seesaw]
             [dmm.core :as dc
                       :refer [v-accum v-identity
                               down-movement up-movement
@@ -150,13 +151,32 @@
   (with-open [wrt (clojure.java.io/writer @activity-log :append true)]
     (.write wrt s)))
 
+(def seesaw-window (atom {}))
+
+(defn seesaw-setup []
+  (seesaw/native!) ;;; that's only if you want to customize swing to your OS
+  (let [dialog-window (seesaw/frame :title "Edit running DMM")
+        input-area (seesaw/text :multi-line? true :text "Enter commands\nhere...")
+        send-button (seesaw/button :text "Send")
+        status-text (seesaw/text "")
+        split-line (seesaw/left-right-split send-button status-text :divider-location 1/5)
+        split-vert (seesaw/top-bottom-split split-line (seesaw/scrollable input-area) :divider-location 1/8) 
+       ]
+    (-> dialog-window seesaw/pack! seesaw/show!)
+    (seesaw/config! dialog-window :content split-vert)
+    (swap! seesaw-window
+           (fn[n] 
+            {:dialog-window dialog-window
+             :input-area input-area
+             :send-button send-button
+             :status-text status-text}))))
+
 (defn setup []
-  ;; Set frame rate to 1 frame per second, so that one has time to
-  ;; ponder things.
   (q/frame-rate 30)
   (q/background 127)
   (q/text-size 24)
   (q/fill 0)
+  (seesaw-setup)
   (log-activity (str "NEW RUN: " (timestamp) "\n"))
   ;; setup function returns initial state. It contains
   ;; the initial output layer of the generalized neural network.
