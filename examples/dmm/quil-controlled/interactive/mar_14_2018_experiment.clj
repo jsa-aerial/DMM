@@ -138,8 +138,13 @@
 
 (defn set-stroke-color! [& c] (swap! stroke-color (fn[n] c)))
 
-(defn set-stroke [] (apply q/stroke @stroke-color)) ;; the only reason we don't name it set-stroke!
+(defn use-stroke-color [] (apply q/stroke @stroke-color)) ;; the only reason we don't name it set-stroke!
                                                     ;; is that q/stroke does not have ! in its name
+(def stroke-weight (atom 1))
+
+(defn set-stroke-weight! [w] (swap! stroke-weight (fn[n] w)))
+
+(defn use-stroke-weight [] (q/stroke-weight @stroke-weight))
 
 (def fading (atom 0))
 
@@ -151,21 +156,6 @@
   (with-open [wrt (clojure.java.io/writer @activity-log :append true)]
     (.write wrt s)))
 
-;;;;; seesaw-specific wrappers (for some reason, we see quil.core and
-;;;;; even "quil.core as q" from Quil key pressed handlers, but not
-;;;;; from Seesaw event handlers)
-
-;;;;; even this does not work (presumably, one would need to pick
-;;;;; a value of a stroke and set it manually downstream
-
-;;;;; but the commands not referring to other namespaces directly
-;;;;; work + microeditor inside Quil works, so committing this
-;;;;; version for the time being
-
-(defn stroke-weight [n]
-   (q/stroke-weight n))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def seesaw-window (atom {}))
 
@@ -280,8 +270,8 @@
   (q/with-fill [127 @fading]
     (q/rect 0 0 (q/width) (q/height)))
 
-  ;;(q/stroke @stroke-color)
-  (set-stroke)
+  (use-stroke-color)
+  (use-stroke-weight)
   (let [combined-mouse (->> quil-state :output-layer extract-mouse-position)
         current-mouse (get combined-mouse :current {})
         previous-mouse (get combined-mouse :previous {})]
