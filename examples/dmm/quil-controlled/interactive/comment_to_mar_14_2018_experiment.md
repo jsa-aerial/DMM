@@ -17,3 +17,8 @@ Here is some of what we tested:
 `(set-stroke-color! 0 0 200)`  
 `(set-fading! 5)`  
 `(nu [v-mouse-coords :mouse-position :previous] [v-mouse-coords :mouse-position :current] -0.1)`  
+
+March 26: the first version of Seesaw interface integrated into this
+experiment (references to other namespaces such as `(q/stroke-weight 5)` 
+currently don't work from Seesaw, so use the microeditor inside the Quil
+window for that).
