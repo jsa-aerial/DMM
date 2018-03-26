@@ -19,6 +19,6 @@ Here is some of what we tested:
 `(nu [v-mouse-coords :mouse-position :previous] [v-mouse-coords :mouse-position :current] -0.1)`  
 
 March 26: the first version of Seesaw interface integrated into this
-experiment (references to other namespaces such as `(q/stroke-weight 5)` 
-currently don't work from Seesaw, so use the microeditor inside the Quil
-window for that).
+experiment. Our use pattern `(q/stroke-weight 5)` didn't work from Seesaw, 
+and doing this from Seesaw was unsafe from the parallelization point of view,
+so this was replaced by use pattern `(set-stroke-weight! 5)`.
