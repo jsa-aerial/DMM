@@ -130,7 +130,9 @@
               {v-accum {:self {:single (m :start-matrix)}}}
               {v-dmm-cons {:my-list {:self {:end-list 1}}}}))))))
 
-(def state (atom (init-state)))
+(def dmm-setup-state (atom (init-state)))
+
+(def edit-state (atom {}))
 
 (def history (atom {})) ;; if we want to keep in-memory log
 
@@ -178,13 +180,14 @@
         send-button (seesaw/button :text "Send")
         status-text (seesaw/text "")
         timer-text (seesaw/text "")
-        two-texts (seesaw/left-right-split status-text timer-text :divider-location 1/2)
-        split-line (seesaw/left-right-split send-button two-texts :divider-location 1/5)
+        ;;two-texts (seesaw/left-right-split status-text timer-text :divider-location 1/2)
+        ;;split-line (seesaw/left-right-split send-button two-texts :divider-location 1/5)
+        two-lefts (seesaw/left-right-split send-button status-text :divider-location 1/3)
+        split-line (seesaw/left-right-split two-lefts timer-text :divider-location 3/5)
         split-vert (seesaw/top-bottom-split split-line (seesaw/scrollable input-area) :divider-location 1/8) 
        ]
     (seesaw/config! dialog-window :content split-vert)
     (-> dialog-window seesaw/pack! seesaw/show!)
-    ;;; (seesaw/text! status-text "DEBUG 1")
     (swap! seesaw-window
            (fn[n] 
             {:dialog-window dialog-window
@@ -192,8 +195,6 @@
              :send-button send-button
              :status-text status-text
              :timer-text timer-text}))
-    ;;; (seesaw/text! status-text "DEBUG 2")
-    ;;; (seesaw/text! (@seesaw-window :status-text) "DEBUG 3")
     (seesaw/listen (@seesaw-window :send-button) 
             :action (fn [e] 
                        (let [next-command (seesaw/text (@seesaw-window :input-area))
@@ -203,11 +204,11 @@
                           (seesaw/text! (@seesaw-window :status-text) new-response)
                           (log-activity (str (timestamp) "\n"
                                              "network timer: " (seesaw/text (@seesaw-window :timer-text)) "\n"
-                                             ;;; "free memory:   " (.freeMemory (. Runtime getRuntime)) "\n"
-                                             ;;; "total memory:  " (.totalMemory (. Runtime getRuntime)) "\n"
+                                             "free memory:   " (.freeMemory (. Runtime getRuntime)) "\n"
+                                             "total memory:  " (.totalMemory (. Runtime getRuntime)) "\n"
                                              "seesaw input:         " next-command "\n"
                                              "seesaw response:      " new-response "\n")))))
-    (seesaw/text! (@seesaw-window :status-text) "DEBUG 4")))
+    (seesaw/text! (@seesaw-window :status-text) "STARTED")))
 
 (defn setup []
   (q/frame-rate 30)
@@ -218,7 +219,7 @@
   (log-activity (str "NEW RUN: " (timestamp) "\n"))
   ;; setup function returns initial state. It contains
   ;; the initial output layer of the generalized neural network.
-  {:output-layer (@state :init-output)
+  {:output-layer (@dmm-setup-state :init-output)
    :timer 0
    :last-response "none"
    :current-text-input ""})
@@ -336,26 +337,26 @@
 
 ;; send field to update the network (network update from field)
 (defn nuff [field]
-  (async/go (async/>! network-update-channel (@state field))))
+  (async/go (async/>! network-update-channel (@edit-state field))))
 
 ;; set field to path
 (defn sf [field x y value]
-  (swap! state (fn [s] (assoc s field (v-path-fn x (v-path-fn y value)))))
+  (swap! edit-state (fn [s] (assoc s field (v-path-fn x (v-path-fn y value)))))
   nil)
 
 ;; set field to zero
 (defn sfzero [field]
-  (swap! state (fn [s] (assoc s field {})))
+  (swap! edit-state (fn [s] (assoc s field {})))
   nil)
 
 ;; set field to sum of fields
 (defn ssum [field field-1 field-2]
-  (swap! state (fn [s] (assoc s field (rec-map-sum (s field-1) (s field-2)))))
+  (swap! edit-state (fn [s] (assoc s field (rec-map-sum (s field-1) (s field-2)))))
   nil)
 
 ;; multiply field by value
 (defn smul [field value]
-  (swap! state (fn [s] (assoc s field (rec-map-mult value (s field)))))
+  (swap! edit-state (fn [s] (assoc s field (rec-map-mult value (s field)))))
   nil)
 
 (defn key-typed [quil-state event]
