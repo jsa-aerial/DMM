@@ -156,14 +156,20 @@
 (defn seesaw-setup []
   (seesaw/native!) ;;; that's only if you want to customize swing to your OS
   (let [dialog-window (seesaw/frame :title "Edit running DMM")
-        input-area (seesaw/text :multi-line? true :text "Enter commands\nhere...")
+        input-area (seesaw/text :multi-line? true 
+                                :text 
+                                  (str "Enter commands                         "
+                                       "                                       "
+                                       "                                       "
+                                       "       \nhere...\n\n\n\n\n\n\n\n\n\n\n")
+                                :font (seesaw.font/font :name :monospaced :size 28))
         send-button (seesaw/button :text "Send")
         status-text (seesaw/text "")
         split-line (seesaw/left-right-split send-button status-text :divider-location 1/5)
         split-vert (seesaw/top-bottom-split split-line (seesaw/scrollable input-area) :divider-location 1/8) 
        ]
-    (-> dialog-window seesaw/pack! seesaw/show!)
     (seesaw/config! dialog-window :content split-vert)
+    (-> dialog-window seesaw/pack! seesaw/show!)
     (swap! seesaw-window
            (fn[n] 
             {:dialog-window dialog-window
