@@ -25,9 +25,9 @@ so this was replaced by use pattern `(set-stroke-weight! 5)`.
 
 It is tested that the following work as expected:
 
-`(sf :a [v-mouse-coords :mouse-position :previous] [v-mouse-coords :mouse-position :current] -0.1)`
-`(sf :b [v-mouse-coords :mouse-position :previous] [v-mouse-coords :mouse-position :current] -0.1)`
-`(smul :b 2)`
-`(smul :a 3)`
-`(ssum :c :a :b)`
-`(nuff :c)`
+`(sf :a [v-mouse-coords :mouse-position :previous] [v-mouse-coords :mouse-position :current] -0.1)`  
+`(sf :b [v-mouse-coords :mouse-position :previous] [v-mouse-coords :mouse-position :current] -0.1)`  
+`(smul :b 2)`  
+`(smul :a 3)`  
+`(ssum :c :a :b)`  
+`(nuff :c)`  
