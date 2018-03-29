@@ -176,7 +176,7 @@
                                        "                                       "
                                        "                                       "
                                        "       \nhere...\n\n\n\n\n\n\n\n\n\n\n")
-                                :font (seesaw.font/font :name :monospaced :size 28))
+                                :font (seesaw.font/font :name :monospaced :size 14))
         send-button (seesaw/button :text "Send")
         status-text (seesaw/text "")
         timer-text (seesaw/text "")
@@ -384,7 +384,7 @@
 
 (q/defsketch quil-try
   :title "A Quil-controlled DMM"
-  :size [1200 800]
+  :size [1100 700]
   ; setup function called only once, during sketch initialization.
   :setup setup
   ; update-state is called on each iteration before draw-state.
