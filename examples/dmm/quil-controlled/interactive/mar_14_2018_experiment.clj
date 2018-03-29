@@ -73,7 +73,7 @@
 ;;; we treat X and Y mouse coordinates as separate outputs
 (defn mouse-coords [previous-state]
     {:current {:mouse-x (q/mouse-x) :mouse-y (q/mouse-y)}
-     :previous (previous-state :previous)}
+     :previous (get previous-state :previous {})}
   )
 
 (def v-mouse-coords (var mouse-coords))
