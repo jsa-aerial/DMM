@@ -16,4 +16,4 @@ May 14, 2018 - prototype of the system for practical livecoding experiments
 (see [comment_to_mar_14_2018_experiment.md](comment_to_mar_14_2018_experiment.md)
 for details).
 
-Apr 8, 2018 - in progress (working with Quil images)
+Apr 8, 2018 - in progress (working with Quil images)...
