@@ -223,6 +223,16 @@
                        x (range image-width)] 
                     {[x y] (q/get-pixel image x y)}))}))
 
+
+;; set field to image data
+(defn sf-image [field file-name]
+   (let [local-image (q/load-image file-name)
+         height-max 400]
+      (log-activity (str "READ IMAGE WITH HEIGHT " (. local-image height) "\n"))
+      (if (> (. local-image height) height-max) (q/resize local-image 0 height-max))
+      (swap! edit-state (fn [s] (assoc s field (map-of-image-points local-image))))
+      nil))
+
 (defn setup []
   (q/frame-rate 30)
   (q/background 127)
@@ -235,10 +245,12 @@
   (log-activity (str "NEW RUN: " (timestamp) "\n"))
   ;; setup function returns initial state. It contains
   ;; the initial output layer of the generalized neural network.
-  (let [test-image (q/load-image "data/IMG_8924.JPG")]  ;;; was GenerativeBrush.PNG
-    (q/resize test-image 0 400)
-    (swap! struct-of-test-image (fn[n] (map-of-image-points test-image)))
-    (log-activity (str "got image points " (count (:points @struct-of-test-image))  "\n")))
+
+  ;(let [test-image (q/load-image "data/IMG_8924.JPG")]  ;;; was GenerativeBrush.PNG
+  ;  (q/resize test-image 0 400)
+  ;  (swap! struct-of-test-image (fn[n] (map-of-image-points test-image)))
+  (sf-image :test-image "data/IMG_8924.JPG")
+  (log-activity (str "got image points " (count (:points (:test-image @edit-state)))  "\n"))
   {:output-layer (@dmm-setup-state :init-output)
    :timer 0
    :last-response "none"
@@ -296,7 +308,7 @@
   (q/with-fill [127 @fading]
     (q/rect 0 0 (q/width) (q/height)))
 
-  (let [test-image-struct @struct-of-test-image
+  (let [test-image-struct (:test-image @edit-state)
         new-image  (q/create-image 
                      (:width test-image-struct)
                      (:height test-image-struct)
