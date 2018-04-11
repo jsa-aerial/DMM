@@ -55,7 +55,11 @@
 
 (defn network-update-monitor [dummy]
   (let [signal ((async/alts!! [network-update-channel] :default {}) 0)]
-    {:signal signal}))
+    ;;{:signal signal} - now one should be able to choose an output
+    ;;                   *** use :direct to update the network matrix
+    (if (map? signal)
+      signal
+      {})))
 
 (def v-mouse-pressed-monitor (var mouse-pressed-monitor))
 
@@ -98,12 +102,12 @@
                      (v-path [v-mouse-pressed-monitor :mouse-pressed-monitor :single]))
 
              :network-interactive-updater-hook
-             (v-path [v-network-update-monitor :network-interactive-updater :signal]
-                     (v-path [v-network-update-monitor :network-interactive-updater :signal]))
+             (v-path [v-network-update-monitor :network-interactive-updater :direct]
+                     (v-path [v-network-update-monitor :network-interactive-updater :direct]))
 
              :network-update-connection
              (v-path [v-accum :self :delta]
-                     (v-path [v-network-update-monitor :network-interactive-updater :signal]))
+                     (v-path [v-network-update-monitor :network-interactive-updater :direct]))
              
              :dmm-cons-accum-connection
              (v-path [v-dmm-cons :my-list :self]
@@ -350,13 +354,18 @@
   (async/go (async/>! mouse-pressed-channel {:x x :y y})))
 
 ;; send "nu [input-path] [output-path] weight" from the quil window
-;; to update the network
+;; to update the network matrix
 (defn nu [x y value]
-  (async/go (async/>! network-update-channel (v-path-fn x (v-path-fn y value)))))
+  (async/go (async/>! network-update-channel {:direct (v-path-fn x (v-path-fn y value))})))
 
-;; send field to update the network (network update from field)
+;; send field to update the network matrix (network update from field)
 (defn nuff [field]
-  (async/go (async/>! network-update-channel (@edit-state field))))
+  (async/go (async/>! network-update-channel {:direct (@edit-state field)})))
+
+;; send field to update the network using arbitrary output of the update neuron 
+;; note: (nuff :field) is equivalent to (nu-general :field :direct)
+(defn nu-general [state-field output-field]
+    (async/go (async/>! network-update-channel {output-field (@edit-state state-field)})))
 
 ;; set field to path
 (defn sf [field x y value]
