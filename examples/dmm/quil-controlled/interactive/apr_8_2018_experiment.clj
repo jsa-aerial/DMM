@@ -257,7 +257,6 @@
   ;; the initial output layer of the generalized neural network.
 
   (sf-image :test-image "data/IMG_8924.JPG")
-  (log-activity (str "got image points " (count (:points (:test-image @edit-state)))  "\n"))
   {:output-layer (@dmm-setup-state :init-output)
    :timer 0
    :last-response "none"
