@@ -314,7 +314,23 @@
   (q/with-fill [127 @fading]
     (q/rect 0 0 (q/width) (q/height)))
 
-  (when-let [test-image-struct (:test-image @edit-state)]
+
+  ;;; we just replaced
+  ;;; (get-in quil-state [:input-layer v-accum :test-image :accum])
+  ;;; with
+  ;;; (:test-image @edit-state)
+
+  ;;; do the following to "drop an image into the network
+  
+  ;;; (nu [v-accum :test-image :accum] [v-accum :test-image :single] 1)
+
+  ;;; (nu [v-accum :test-image :delta] [v-network-update-monitor :network-interactive-updater :to-test-image] 1)
+
+  ;;; (nu-general :test-image :to-test-image)
+
+  (when-let [test-image-struct (get-in quil-state [:input-layer v-accum :test-image :accum])]
+   (when (get test-image-struct :points)
+     (seesaw/text! (@seesaw-window :status-text) (str (count (:points test-image-struct))))
      (let [new-image  (q/create-image 
                         (:width test-image-struct)
                         (:height test-image-struct)
@@ -323,7 +339,7 @@
           (q/set-pixel new-image x y color))
        ;;(seesaw/text! (@seesaw-window :status-text) 
        ;;              (format "%X" (q/get-pixel new-image 0 0)))
-       (q/image new-image 200 100)))
+       (q/image new-image 200 100))))
 
   (use-stroke-color)
   (use-stroke-weight)
