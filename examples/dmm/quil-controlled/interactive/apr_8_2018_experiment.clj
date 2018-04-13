@@ -315,9 +315,9 @@
     (q/rect 0 0 (q/width) (q/height)))
 
 
-  ;;; we just replaced
+  ;;; we just started to use
   ;;; (get-in quil-state [:input-layer v-accum :test-image :accum])
-  ;;; with
+  ;;; instead of
   ;;; (:test-image @edit-state)
 
   ;;; do the following to "drop an image into the network
