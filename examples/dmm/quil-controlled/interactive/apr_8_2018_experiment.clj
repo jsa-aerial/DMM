@@ -45,6 +45,8 @@
 
 (def network-update-channel (async/chan))
 
+(def read-image-request-queue (async/chan 100))
+
 (defn mouse-pressed-monitor [dummy]
   (let [signal ((async/alts!! [mouse-pressed-channel] :default {}) 0)]
     {:signal
@@ -229,8 +231,8 @@
                     {[x y] (q/get-pixel image x y)}))}))
 
 
-;; set field to image data
-(defn sf-image [field file-name]
+;; set field to image data (from quil context)
+(defn sf-image-from-quil [field file-name]
   (future
     ;(Thread/sleep 5000) 
     (let [status (try 
@@ -240,8 +242,11 @@
                        (if (> (. local-image height) height-max) (q/resize local-image 0 height-max))
                        (swap! edit-state (fn [s] (assoc s field (map-of-image-points local-image))))
                        (str "READ " file-name))
-                    (catch Exception e "FAILED TO READ " file-name))]
+                    (catch Exception e (str "FAILED TO READ " file-name)))]
         (seesaw/text! (@seesaw-window :status-text) status)))) 
+
+(defn sf-image [field file-name] ;;; have to do this via a queue because of quil context issues
+  (async/go (async/>! read-image-request-queue [field file-name])))
 
 (defn setup []
   (q/frame-rate 30)
@@ -269,6 +274,8 @@
         current-output (up-movement current-input)
         timer (inc (:timer quil-state))]
     (swap! history (fn [h] (assoc h timer {:input current-input, :output current-output})))
+    (when-let [read-image-request ((async/alts!! [read-image-request-queue] :default nil) 0)]
+      (apply sf-image-from-quil read-image-request))
     {:input-layer current-input
      :output-layer current-output
      :timer timer
