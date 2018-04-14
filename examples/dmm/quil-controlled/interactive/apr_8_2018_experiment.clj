@@ -316,7 +316,7 @@
 
 (defn draw-state [quil-state]
 
-  (seesaw/text! (@seesaw-window :timer-text) (str (quil-state :timer)))
+  (seesaw/text! (@seesaw-window :timer-text) (str (quil-state :timer) " " (q/current-frame-rate)))
 
   (q/with-fill [127 @fading]
     (q/rect 0 0 (q/width) (q/height)))
