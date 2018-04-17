@@ -103,7 +103,7 @@
 ;;; we'll actually start with a completely trivial sketch,
 ;;; but we'll use a timer input to create some movement;
 ;;; The implementation is very tentative - what's idiomatic here?
-(defn custom-wave-transform [image-timer-input]
+#_(defn custom-wave-transform [image-timer-input]
   (let [image-points (get-in image-timer-input [:image :points] {})
         image-height (get-in image-timer-input [:image :height] 0)
         image-width (get-in image-timer-input [:image :width] 0)
@@ -127,6 +127,37 @@
                                (assoc M [x y] 
                                         (image-points [(int (Math/floor (* factor x))) 
                                                        (int (Math/floor (* factor y)))]))) 
+                       {} indices)}}))
+
+;;; a more experimental version of custom wave transform
+;;; forward transform on a relatively sparse collection of points
+(defn custom-wave-transform [image-timer-input]
+  (let [image-points (get-in image-timer-input [:image :points] {})
+        image-height (get-in image-timer-input [:image :height] 0)
+        image-width (get-in image-timer-input [:image :width] 0)
+        timer (get-in image-timer-input [:timer :number] 4.7) ;;; 4.7 keeps Math/sin close to -1
+        factor (+ 0.75 (* 0.25 (Math/sin timer)))
+        source-width (* factor image-width)
+        source-height (* factor image-height)
+        indices (for [i (range 80000)] [(int (Math/floor (rand source-width)))
+                                        (int (Math/floor (rand source-height)))])]
+    (println (str "timer=" timer " factor=" factor))
+    #_(log-activity (str "custom wave: height " image-height " width " image-width " timer " timer 
+                        " count of image points " (count image-points) 
+                        " count of indices " (count indices) "\n" ))
+    {:image {:width image-width
+             :height image-height
+             :points (reduce (fn [M [x y]]
+                               #_(when (and (= x 61) (= y 396))
+                                 (println 
+                                   (str "factor= " factor
+                                        " old x = " (int (Math/floor (* factor x)))
+                                        " old y = " (int (Math/floor (* factor y)))))
+                                 (println
+                                    (str "color=" (image-points [45 297]) ";"))) 
+                               (assoc M [(int (Math/floor (/ x factor)))
+                                         (int (Math/floor (/ y factor)))] 
+                                        (image-points [x y]))) 
                        {} indices)}}))
 
 (def v-custom-wave-transform (var custom-wave-transform))
@@ -400,13 +431,16 @@
           (assert (<= 0 x) "(<= 0 x)")
           (assert (<= 0 y) "(<= 0 y)")
           (assert (< x (:width test-image-struct)) "(< x (:width test-image-struct))")
-          (assert (< x (:width test-image-struct)) "(< x (:width test-image-struct))")
+          (assert (< y (:height test-image-struct)) "(< y (:height test-image-struct))")
           (when (nil? color)
             (println (str "NIL COLOR x= " x " y= " y)))
           (assert (some? color) "(some? color)")
           (q/set-pixel new-image x y color))
        ;;(seesaw/text! (@seesaw-window :status-text) 
        ;;              (format "%X" (q/get-pixel new-image 0 0)))
+       ;; without the next form it is beautiful too, but not what's intended
+       (q/with-fill [127]
+          (q/rect 200 100 (:width test-image-struct) (:height test-image-struct)))
        (q/image new-image 200 100))))
 
   (use-stroke-color)
