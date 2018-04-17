@@ -103,13 +103,15 @@
 ;;; we'll actually start with a completely trivial sketch,
 ;;; but we'll use a timer input to create some movement;
 ;;; The implementation is very tentative - what's idiomatic here?
-#_(defn custom-wave-transform [image-timer-input]
+(defn custom-wave-transform [image-timer-input]
   (let [image-points (get-in image-timer-input [:image :points] {})
         image-height (get-in image-timer-input [:image :height] 0)
         image-width (get-in image-timer-input [:image :width] 0)
         timer (get-in image-timer-input [:timer :number] 4.7) ;;; 4.7 keeps Math/sin close to -1
         factor (+ 0.75 (* 0.25 (Math/sin timer)))
-        indices (for [x (range image-width) y (range image-height)] [x y])]
+        ;;; indices (for [x (range image-width) y (range image-height)] [x y])]
+        indices (repeatedly 80000 (fn[][(rand-int image-width)
+                                        (rand-int image-height)]))]
     (println (str "timer=" timer " factor=" factor))
     #_(log-activity (str "custom wave: height " image-height " width " image-width " timer " timer 
                         " count of image points " (count image-points) 
@@ -131,7 +133,7 @@
 
 ;;; a more experimental version of custom wave transform
 ;;; forward transform on a relatively sparse collection of points
-(defn custom-wave-transform [image-timer-input]
+#_(defn custom-wave-transform [image-timer-input]
   (let [image-points (get-in image-timer-input [:image :points] {})
         image-height (get-in image-timer-input [:image :height] 0)
         image-width (get-in image-timer-input [:image :width] 0)
