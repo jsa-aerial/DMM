@@ -137,10 +137,10 @@
         image-width (get-in image-timer-input [:image :width] 0)
         timer (get-in image-timer-input [:timer :number] 4.7) ;;; 4.7 keeps Math/sin close to -1
         factor (+ 0.75 (* 0.25 (Math/sin timer)))
-        source-width (* factor image-width)
-        source-height (* factor image-height)
-        indices (for [i (range 80000)] [(int (Math/floor (rand source-width)))
-                                        (int (Math/floor (rand source-height)))])]
+        source-width (int (Math/floor (* factor image-width)))
+        source-height (int (Math/floor (* factor image-height)))
+        indices (repeatedly 80000 (fn[][(rand-int source-width)
+                                        (rand-int source-height)]))]
     (println (str "timer=" timer " factor=" factor))
     #_(log-activity (str "custom wave: height " image-height " width " image-width " timer " timer 
                         " count of image points " (count image-points) 
@@ -243,6 +243,10 @@
 (def fading (atom 0))
 
 (defn set-fading! [f-factor] (swap! fading (fn[n] f-factor)))
+
+(def clear-image (atom true))
+
+(defn toggle-clear-image! [] (swap! clear-image (fn[old-value] (not old-value))))
 
 (def seesaw-window (atom {}))
 
@@ -438,9 +442,9 @@
           (q/set-pixel new-image x y color))
        ;;(seesaw/text! (@seesaw-window :status-text) 
        ;;              (format "%X" (q/get-pixel new-image 0 0)))
-       ;; without the next form it is beautiful too, but not what's intended
-       (q/with-fill [127]
-          (q/rect 200 100 (:width test-image-struct) (:height test-image-struct)))
+       (when @clear-image
+         (q/with-fill [127]
+          (q/rect 200 100 (:width test-image-struct) (:height test-image-struct))))
        (q/image new-image 200 100))))
 
   (use-stroke-color)
