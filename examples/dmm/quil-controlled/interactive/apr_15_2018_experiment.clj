@@ -1,4 +1,4 @@
-(ns dmm.examples.quil-controlled.interactive.apr-8-2018-experiment
+(ns dmm.examples.quil-controlled.interactive.apr-15-2018-experiment
   (:require [quil.core :as q]
             [quil.middleware :as m]
             [seesaw.core :as seesaw]
@@ -112,7 +112,7 @@
         ;;; indices (for [x (range image-width) y (range image-height)] [x y])]
         indices (repeatedly 80000 (fn[][(rand-int image-width)
                                         (rand-int image-height)]))]
-    (println (str "timer=" timer " factor=" factor))
+    #_(println (str "timer=" timer " factor=" factor))
     #_(log-activity (str "custom wave: height " image-height " width " image-width " timer " timer 
                         " count of image points " (count image-points) 
                         " count of indices " (count indices) "\n" ))
@@ -143,7 +143,7 @@
         source-height (int (Math/floor (* factor image-height)))
         indices (repeatedly 80000 (fn[][(rand-int source-width)
                                         (rand-int source-height)]))]
-    (println (str "timer=" timer " factor=" factor))
+    #_(println (str "timer=" timer " factor=" factor))
     #_(log-activity (str "custom wave: height " image-height " width " image-width " timer " timer 
                         " count of image points " (count image-points) 
                         " count of indices " (count indices) "\n" ))
