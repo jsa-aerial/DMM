@@ -36,3 +36,14 @@ text buffers (e.g. when a new hash-key not previously used
 needs to be added), accumulator metaphor, handlers of
 mouse clicks and other relevant mouse movements, handlers
 of keyboard events.
+
+The idea to edit the network on the fly by using 
+the ability of DMMs to self-update was introduced in
+
+https://arxiv.org/abs/1605.05296
+
+In addition to straightforward network edits, one can equip the
+network with the ability to generate edits by interpreting
+user inputs in various ways (in particular, straightforward
+edits are only good for trusted users).
+
