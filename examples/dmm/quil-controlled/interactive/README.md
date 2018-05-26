@@ -18,4 +18,4 @@ for details).
 
 Apr 8, 2018; Apr 15, 2018 - tentative experiments with Quil images
 (see [comment_to_april_2018_experiments.md](comment_to_april_2018_experiments.md)
-for lessons.)
+for lessons).
