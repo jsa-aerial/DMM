@@ -1,4 +1,4 @@
-# lessons from april 2018 experiments in image processing and rendering in DMMs
+# Lessons from april 2018 experiments in image processing and rendering in DMMs
 
 ## More linear operation types are desirable
 
@@ -7,13 +7,17 @@ one would like to also have access to linear operations where + stands for `max`
 ("tropical arithmetic"), or, if one wants to also express the variable upper left
 corner, where + dually stands for `min`.
 
-## It is not clear if performance of hash maps with array keys (e.g. `[num1 num2]`)
+## It is not clear if performance of hash maps with array keys is good enough
+
+It is not clear if performance of hash maps with array keys (e.g. `[num1 num2]`)
 is good enough
 
 In general, slowdown from transforming such maps was higher than I expected, and
 this requires further thought.
 
-## A natural programming style with memory based on accumulator neurons seems
+## A natural programming style with memory based on accumulator neurons.
+
+A natural programming style with memory based on accumulator neurons seems
 to be emerging. 
 
 The `nu-general` function which sends data to update the network using 
