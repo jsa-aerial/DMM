@@ -1,4 +1,4 @@
-# Lessons from april 2018 experiments in image processing and rendering in DMMs
+# Lessons from April 2018 experiments in image processing and rendering in DMMs
 
 ## More linear operation types are desirable
 
@@ -10,7 +10,7 @@ corner, where + dually stands for `min`.
 ## It is not clear if performance of hash maps with array keys is good enough
 
 It is not clear if performance of hash maps with array keys (e.g. `[num1 num2]`)
-is good enough
+is good enough.
 
 In general, slowdown from transforming such maps was higher than I expected, and
 this requires further thought.
@@ -33,7 +33,7 @@ Different outputs can be connected to different accumulator neurons, e.g.
 Here we use `:to-test-image` output of the update neuron, whereas the `nu` function
 uses `:direct` output of the update neuron.
 
-This pattern is consistent with the observations of an ACL 2018 paper by a U. of Washington team,
+This pattern resonates with the observations of an ACL 2018 paper by a U. of Washington team,
 "Long Short-Term Memory as a Dynamically Computed Element-wise Weighted Sum"
 
 https://arxiv.org/abs/1805.03716
@@ -43,7 +43,7 @@ naturally in our context. Here we have neurons connected via the accumulator con
 and acting as active memory units, and the idea to build a machine learning model solely based 
 on such memory units does feel more and more attractive recently.
 
-This is also consistent with an observation stemming
+This would also be consistent with an observation stemming
 from a recent paper introducing Recurrent Identity Networks, which notes that the
 matrix responsible for a recurrent connection should ideally be `1 + epsilon` for a 
 recurrent setup to work well:
