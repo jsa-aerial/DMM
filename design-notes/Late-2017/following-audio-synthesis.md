@@ -11,7 +11,8 @@ http://www.jaimeoliver.pe/courses/ci/pdf/mathews-1963.pdf
 This is a discipline of compositional functional programming
 with streams of samples (streams of numbers in case of mono).
 An introduction I particularly like is "Sonifying Processing:
-The Beads Tutorial" by Evan X. Merz: http://evanxmerz.com/?page_id=18
+The Beads Tutorial" by Evan X. Merz: http://evanxmerz.com/?page_id=18 (alternatively, see
+http://computermusicblog.com/blog/sonifyingprocessing/)
 
 (A free PDF: http://www.computermusicblog.com/SonifyingProcessing/Sonifying_Processing_The_Beads_Tutorial.pdf )
 
