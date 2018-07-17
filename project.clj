@@ -9,9 +9,6 @@
                  [org.clojure/tools.nrepl  "0.2.12"] ; Explicit nREPL
                  [proto-repl "0.3.1"] ; for Atom editor
 
-                 [http.async.client "1.2.0"]
-                 [http-kit "2.2.0"]
-                 [compojure "1.5.1"]
                  [org.clojure/core.async "0.4.474"]
                  
                  [clojure-msgpack "1.2.1"]
