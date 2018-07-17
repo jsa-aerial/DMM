@@ -4,7 +4,6 @@
   :license {:name "The MIT License (MIT)"
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.9.0"]
-                 ;;[org.clojure/clojure "1.8.0"]
                  [quil "2.6.0"]
                  [net.mikera/vectorz-clj "0.45.0"]
                  [org.clojure/tools.nrepl  "0.2.12"] ; Explicit nREPL
@@ -17,6 +16,8 @@
                  
                  [clojure-msgpack "1.2.1"]
                  [org.clojure/data.json "0.2.6"]
+
+                 [aerial.hanasu "0.1.0"]
 
                  [com.rpl/specter "1.1.1"]
                  
