@@ -14,7 +14,13 @@
                  [clojure-msgpack "1.2.1"]
                  [org.clojure/data.json "0.2.6"]
 
-                 [aerial.hanasu "0.1.0"]
+                 [aerial.hanasu "0.2.1"] ; state-of-the-art websocket framework
+
+                 ;;; if one wants to do more simple-minded websocket experiments:
+                 #_[http.async.client "1.2.0"]
+                 #_[http-kit "2.2.0"]
+                 #_[compojure "1.5.1"]
+                 #_[haslett "0.1.2"]
 
                  [com.rpl/specter "1.1.1"]
                  
