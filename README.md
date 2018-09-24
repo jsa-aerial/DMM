@@ -12,3 +12,7 @@ https://arxiv.org/abs/1706.00648
 A "K + K = 120" Festschrift paper:
 
 https://arxiv.org/abs/1712.07447
+
+How to run example DMMs: see `README.md` at:
+
+https://github.com/jsa-aerial/DMM/tree/master/doc
