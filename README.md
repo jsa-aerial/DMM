@@ -11,7 +11,7 @@ A LearnAut 2017 paper:
 
 https://arxiv.org/abs/1706.00648
 
-A "K + K = 120" Festschrift paper:
+A "K + K = 120" Festschrift paper, **Dataflow Matrix Machines and V-values: a Bridge between Programs and Neural Nets**:
 
 https://arxiv.org/abs/1712.07447
 
