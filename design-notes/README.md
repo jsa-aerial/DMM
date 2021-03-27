@@ -8,3 +8,5 @@ Snippets of design notes
  * 2019: https://github.com/anhinga/2019-design-notes
  
  * 2020: https://github.com/anhinga/2020-notes
+
+ * 2021: https://github.com/anhinga/2021-notes
