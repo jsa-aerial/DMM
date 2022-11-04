@@ -10,3 +10,6 @@ Snippets of design notes
  * 2020: https://github.com/anhinga/2020-notes
 
  * 2021: https://github.com/anhinga/2021-notes
+ 
+ * 2022: https://github.com/anhinga/2022-notes
+ 
