@@ -20,3 +20,7 @@ https://arxiv.org/abs/1712.07447
 How to run example DMMs: see `README.md` at:
 
 https://github.com/jsa-aerial/DMM/tree/master/doc
+
+---
+
+6 years later: the main DMM website is https://anhinga.github.io/
