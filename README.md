@@ -23,4 +23,4 @@ https://github.com/jsa-aerial/DMM/tree/master/doc
 
 ---
 
-6 years later: the main DMM website is https://anhinga.github.io/
+**6 years later:** the main DMM website is https://anhinga.github.io/
