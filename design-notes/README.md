@@ -13,3 +13,7 @@ Snippets of design notes
  
  * 2022: https://github.com/anhinga/2022-notes
  
+ * 2023: https://github.com/anhinga/2023-notes
+
+ * 2024: https://github.com/anhinga/2024-notes
+ 
