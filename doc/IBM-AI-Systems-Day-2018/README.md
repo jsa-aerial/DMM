@@ -2,7 +2,7 @@
 
 **Dataflow Matrix Machines and V-values: a Bridge between Programs and Neural Nets**
 
-Use this version: 
+Use this version: [aisys18-bukatin.pdf](aisys18-bukatin.pdf)
 
 ---
 
